@@ -20,4 +20,6 @@
     <color name="black">#616161</color>
     <color name="google">#C6412C</color>
     <color name="blue">#0000FF</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

@@ -189,16 +189,4 @@ public class LoginActivity extends Activity {
                 .setIcon(R.drawable.ic_error_outline_24px)
                 .show();
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuthData = mFirebaseRef.getAuth();
-        if (mAuthData != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
 }
