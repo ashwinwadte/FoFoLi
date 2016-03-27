@@ -11,16 +11,20 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
+import com.waftinc.fofoli.model.User;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.utils.Utils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CreateAccountActivity extends Activity {
@@ -39,6 +43,9 @@ public class CreateAccountActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.createAccountLayout);
+        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
@@ -89,12 +96,12 @@ public class CreateAccountActivity extends Activity {
         etConfirmPassword.setError(null);
 
         // get the values
-        String mName = etName.getText().toString();
-        String mContact = etContact.getText().toString();
-        String mAddress = etAddress.getText().toString();
+        final String mName = etName.getText().toString();
+        final String mContact = etContact.getText().toString();
+        final String mAddress = etAddress.getText().toString();
         final String mEmail = etEmail.getText().toString();
         final String mNewPassword = etNewPassword.getText().toString();
-        String mConfirmPassword = etConfirmPassword.getText().toString();
+        final String mConfirmPassword = etConfirmPassword.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -150,25 +157,33 @@ public class CreateAccountActivity extends Activity {
             // perform the user login attempt.
             progressBar.setVisibility(View.VISIBLE);
 
+            final User newUser = new User(mName, mContact, mAddress);
+
             mFirebaseRef.createUser(mEmail, mNewPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                     Toast.makeText(getApplicationContext(), "New account created", Toast.LENGTH_SHORT).show();
-                    loginWithPassword(mEmail, mNewPassword);
+                    addUserToFirebase(newUser, mEmail);
+                    loginWithPassword(mEmail, mNewPassword, mName);
                 }
 
                 @Override
                 public void onError(FirebaseError firebaseError) {
-                    // there was an error
                     progressBar.setVisibility(View.GONE);
-                    etConfirmPassword.requestFocus();
-                    showErrorDialog("Error: " + firebaseError.getMessage());
+
+                    if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
+                        etEmail.requestFocus();
+                        etEmail.setError(getString(R.string.error_email_taken));
+                    } else {
+                        etConfirmPassword.requestFocus();
+                        showErrorDialog("Network problem!\nPlease try again!");
+                    }
                 }
             });
         }
     }
 
-    public void loginWithPassword(final String email, final String password) {
+    private void loginWithPassword(final String email, final String password, final String mName) {
 
         mFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
 
@@ -176,14 +191,15 @@ public class CreateAccountActivity extends Activity {
             public void onAuthenticated(AuthData authData) {
                 progressBar.setVisibility(View.GONE);
 
-                String userEmail = authData.getProviderData().get("email").toString();
+//                String userEmail = authData.getProviderData().get("email").toString();
                 String uid = authData.getUid();
 
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(CreateAccountActivity.this);
                 SharedPreferences.Editor spe = sp.edit();
 
-                spe.putString(Constants.USER_EMAIL, userEmail);
-                spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(userEmail));
+                spe.putString(Constants.USER_NAME, mName);
+                spe.putString(Constants.USER_EMAIL, email);
+                spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(email));
                 spe.putString(Constants.UID, uid);
                 spe.apply();
 
@@ -204,6 +220,16 @@ public class CreateAccountActivity extends Activity {
 
             }
         });
+    }
+
+    private void addUserToFirebase(User user, String mEmail) {
+        String encodedEmail = Utils.encodeEmail(mEmail);
+
+        Firebase userInfo = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail).child(Constants.FIREBASE_LOCATION_USER_INFO);
+
+        HashMap<String, Object> newUserMap = (HashMap<String, Object>) new ObjectMapper().convertValue(user, Map.class);
+
+        userInfo.updateChildren(newUserMap);
     }
 
     private boolean isEmailValid(String email) {

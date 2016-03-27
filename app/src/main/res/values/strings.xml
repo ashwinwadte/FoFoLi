@@ -15,5 +15,6 @@
 
     <string name="title_activity_splash">Food For Life</string>
     <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_content">FOOD\nFOR\nLIFE</string>
+    <string name="error_email_taken">Email is already taken</string>
 </resources>

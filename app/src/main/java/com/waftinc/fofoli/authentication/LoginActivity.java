@@ -11,6 +11,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -35,6 +36,9 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.loginLayout);
+        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
@@ -141,8 +145,8 @@ public class LoginActivity extends Activity {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                 SharedPreferences.Editor spe = sp.edit();
 
-                spe.putString(Constants.USER_EMAIL, userEmail);
-                spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(userEmail));
+                spe.putString(Constants.USER_EMAIL, email);
+                spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(email));
                 spe.putString(Constants.UID, uid);
                 spe.apply();
 
