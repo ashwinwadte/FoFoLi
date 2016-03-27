@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.waftinc.fofoli.CreateAccountActivity">
+    tools:context=".authentication.CreateAccountActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -221,5 +221,13 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <ProgressBar
+        android:id="@+id/pbCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

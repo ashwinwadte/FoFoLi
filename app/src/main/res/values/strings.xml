@@ -7,4 +7,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_create_account">Create New Account</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_user_not_registered">This email is not registered</string>
+    <string name="error_password_mismatch">Password doesn`t match</string>
 </resources>
