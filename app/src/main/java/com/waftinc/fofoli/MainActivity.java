@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        initWidgets();
-
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -68,11 +66,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        initWidgets(headerView);
     }
 
-    private void initWidgets() {
-        tvUserName = (TextView) findViewById(R.id.navbar_user_name);
-        tvUserEmail = (TextView) findViewById(R.id.navbar_user_email);
+    private void initWidgets(View headerView) {
+        tvUserName = (TextView) headerView.findViewById(R.id.navbar_user_name);
+        tvUserEmail = (TextView) headerView.findViewById(R.id.navbar_user_email);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity
         mFirebaseRef.unauth();
 
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

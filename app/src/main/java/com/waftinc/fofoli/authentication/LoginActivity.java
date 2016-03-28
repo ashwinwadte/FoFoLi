@@ -10,8 +10,8 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -29,6 +29,7 @@ public class LoginActivity extends Activity {
 
     EditText etEmail, etPassword;
     ProgressBar progressBar;
+    LinearLayout linearLayout;
 
     private Firebase mFirebaseRef;
 
@@ -37,11 +38,12 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.loginLayout);
-        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
+//        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.loginLayout);
+//        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
+        linearLayout = (LinearLayout) findViewById(R.id.linear_layout_login_activity);
         etEmail = (EditText) findViewById(R.id.edit_text_email);
         etPassword = (EditText) findViewById(R.id.edit_text_password);
         progressBar = (ProgressBar) findViewById(R.id.pbLogin);
@@ -117,6 +119,7 @@ public class LoginActivity extends Activity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             progressBar.setVisibility(View.VISIBLE);
+            linearLayout.setVisibility(View.GONE);
             loginWithPassword(mEmail, mPassword);
 
         }
@@ -138,6 +141,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onAuthenticated(AuthData authData) {
                 progressBar.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
 
                 String userEmail = authData.getProviderData().get("email").toString();
                 String uid = authData.getUid();

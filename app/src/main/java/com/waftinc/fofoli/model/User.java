@@ -20,11 +20,11 @@ public class User {
     public User() {
     }
 
-    public User(String name, String contact, String address) {
+    public User(String name, String contact, String address, HashMap<String, Object> timestampJoined) {
         this.name = name;
         this.contact = contact;
         this.address = address;
-        this.timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+        this.timestampJoined = timestampJoined;
     }
 
     public String getAddress() {

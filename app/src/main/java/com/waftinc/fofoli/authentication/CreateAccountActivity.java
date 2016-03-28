@@ -10,14 +10,15 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.User;
@@ -36,6 +37,7 @@ public class CreateAccountActivity extends Activity {
 
     EditText etName, etContact, etAddress, etEmail, etNewPassword, etConfirmPassword;
     ProgressBar progressBar;
+    LinearLayout linearLayout;
 
     private Firebase mFirebaseRef;
 
@@ -44,8 +46,8 @@ public class CreateAccountActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.createAccountLayout);
-        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
+//        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.createAccountLayout);
+//        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
@@ -67,6 +69,7 @@ public class CreateAccountActivity extends Activity {
     }
 
     private void initWidgets() {
+        linearLayout = (LinearLayout) findViewById(R.id.linear_layout_create_account_activity);
         etName = (EditText) findViewById(R.id.edit_text_username_create);
         etContact = (EditText) findViewById(R.id.edit_text_mobile_create);
         etAddress = (EditText) findViewById(R.id.edit_text_address_create);
@@ -156,8 +159,12 @@ public class CreateAccountActivity extends Activity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             progressBar.setVisibility(View.VISIBLE);
+            linearLayout.setVisibility(View.GONE);
 
-            final User newUser = new User(mName, mContact, mAddress);
+            HashMap<String, Object> timestampJoined = new HashMap<>();
+            timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
+
+            final User newUser = new User(mName, mContact, mAddress, timestampJoined);
 
             mFirebaseRef.createUser(mEmail, mNewPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
@@ -170,6 +177,7 @@ public class CreateAccountActivity extends Activity {
                 @Override
                 public void onError(FirebaseError firebaseError) {
                     progressBar.setVisibility(View.GONE);
+                    linearLayout.setVisibility(View.VISIBLE);
 
                     if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
                         etEmail.requestFocus();
@@ -190,6 +198,7 @@ public class CreateAccountActivity extends Activity {
             @Override
             public void onAuthenticated(AuthData authData) {
                 progressBar.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
 
 //                String userEmail = authData.getProviderData().get("email").toString();
                 String uid = authData.getUid();

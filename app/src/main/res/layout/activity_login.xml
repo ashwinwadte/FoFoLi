@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/loginLayout"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#1976d2"
+    android:fillViewport="true"
     tools:context=".authentication.LoginActivity">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/linear_layout_login_activity"
@@ -25,7 +22,8 @@
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin">
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:visibility="visible">
 
             <!--<LinearLayout-->
             <!--android:layout_width="0px"-->
@@ -109,18 +107,16 @@
                     android:onClick="onSignUpPressed"
                     android:text="Sign Up" />
             </LinearLayout>
-
-
         </LinearLayout>
 
-    </ScrollView>
+        <ProgressBar
+            android:id="@+id/pbLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</ScrollView>
 
-    <ProgressBar
-        android:id="@+id/pbLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone" />
-</RelativeLayout>
