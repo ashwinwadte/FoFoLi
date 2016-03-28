@@ -1,10 +1,5 @@
 package com.waftinc.fofoli.model;
 
-import com.firebase.client.ServerValue;
-import com.waftinc.fofoli.utils.Constants;
-
-import java.util.HashMap;
-
 /**
  * Created by Ashwin on 27-Mar-16.
  */
@@ -12,7 +7,7 @@ public class User {
     private String name;
     private String contact;
     private String address;
-    private HashMap<String, Object> timestampJoined;
+    private Object timestampJoined;
 
     /**
      * Required public constructor
@@ -20,7 +15,7 @@ public class User {
     public User() {
     }
 
-    public User(String name, String contact, String address, HashMap<String, Object> timestampJoined) {
+    public User(String name, String contact, String address, Object timestampJoined) {
         this.name = name;
         this.contact = contact;
         this.address = address;
@@ -39,7 +34,7 @@ public class User {
         return contact;
     }
 
-    public HashMap<String, Object> getTimestampJoined() {
+    public Object getTimestampJoined() {
         return timestampJoined;
     }
 }

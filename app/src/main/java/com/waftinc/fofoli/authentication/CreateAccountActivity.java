@@ -161,17 +161,15 @@ public class CreateAccountActivity extends Activity {
             progressBar.setVisibility(View.VISIBLE);
             linearLayout.setVisibility(View.GONE);
 
-            HashMap<String, Object> timestampJoined = new HashMap<>();
-            timestampJoined.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
 
-            final User newUser = new User(mName, mContact, mAddress, timestampJoined);
+            final User newUser = new User(mName, mContact, mAddress, ServerValue.TIMESTAMP);
 
             mFirebaseRef.createUser(mEmail, mNewPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                     Toast.makeText(getApplicationContext(), "New account created", Toast.LENGTH_SHORT).show();
                     addUserToFirebase(newUser, mEmail);
-                    loginWithPassword(mEmail, mNewPassword, mName);
+                    loginWithPassword(mEmail, mNewPassword, newUser);
                 }
 
                 @Override
@@ -191,7 +189,7 @@ public class CreateAccountActivity extends Activity {
         }
     }
 
-    private void loginWithPassword(final String email, final String password, final String mName) {
+    private void loginWithPassword(final String email, final String password, final User newUser) {
 
         mFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
 
@@ -206,7 +204,11 @@ public class CreateAccountActivity extends Activity {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(CreateAccountActivity.this);
                 SharedPreferences.Editor spe = sp.edit();
 
-                spe.putString(Constants.USER_NAME, mName);
+                spe.putString(Constants.USER_NAME, newUser.getName());
+                spe.putString(Constants.USER_CONTACT, newUser.getContact());
+                spe.putString(Constants.USER_ADDRESS, newUser.getAddress());
+
+
                 spe.putString(Constants.USER_EMAIL, email);
                 spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(email));
                 spe.putString(Constants.UID, uid);

@@ -17,4 +17,9 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">FOOD\nFOR\nLIFE</string>
     <string name="error_email_taken">Email is already taken</string>
+    <string name="title_activity_main">Food For Life</string>
+    <string name="hint_count_of_people">No. of people can be satisfied</string>
+    <string name="positive_button_post">Post</string>
+    <string name="max_people">*Max. 5 people at a time</string>
+    <string name="error_max_people">Max. 5 people allowed</string>
 </resources>

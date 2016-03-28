@@ -12,6 +12,8 @@ public class Constants {
     public static final String FIREBASE_LOCATION_USERS = "users";
     public static final String FIREBASE_LOCATION_POSTS = "posts";
     public static final String FIREBASE_LOCATION_USER_INFO = "userInfo";
+    public static final String FIREBASE_LOCATION_USER_POSTS = "userPosts";
+
 
     //Constant Firebase URLS
     public static final String FIREBASE_ROOT_URL = "https://fofoli.firebaseio.com";
@@ -25,6 +27,9 @@ public class Constants {
 
     //SharedPreference KEYs
     public static final String USER_NAME = "userName";
+    public static final String USER_CONTACT = "userContact";
+    public static final String USER_ADDRESS = "userAddress";
+
     public static final String USER_EMAIL = "userEmail";
     public static final String ENCODED_EMAIL = "encodedEmail";
     public static final String UID = "uid";

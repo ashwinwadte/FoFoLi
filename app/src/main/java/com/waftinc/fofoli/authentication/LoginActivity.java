@@ -14,10 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
+import com.waftinc.fofoli.model.User;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.utils.Utils;
 
@@ -143,21 +146,41 @@ public class LoginActivity extends Activity {
                 progressBar.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.VISIBLE);
 
-                String userEmail = authData.getProviderData().get("email").toString();
-                String uid = authData.getUid();
+//                String userEmail = authData.getProviderData().get("email").toString();
+                final String uid = authData.getUid();
+                final String encodedEmail = Utils.encodeEmail(email);
+
+                Firebase userInfoRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail).child(Constants.FIREBASE_LOCATION_USER_INFO);
 
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                SharedPreferences.Editor spe = sp.edit();
+                final SharedPreferences.Editor spe = sp.edit();
 
-                spe.putString(Constants.USER_EMAIL, email);
-                spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(email));
-                spe.putString(Constants.UID, uid);
-                spe.apply();
+                userInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user != null) {
+                            spe.putString(Constants.USER_NAME, user.getName());
+                            spe.putString(Constants.USER_CONTACT, user.getContact());
+                            spe.putString(Constants.USER_ADDRESS, user.getAddress());
 
-                //start new activity
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                        }
+                        spe.putString(Constants.USER_EMAIL, email);
+                        spe.putString(Constants.ENCODED_EMAIL, encodedEmail);
+                        spe.putString(Constants.UID, uid);
+                        spe.apply();
+
+                        //start new activity
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
             }
 
             @Override

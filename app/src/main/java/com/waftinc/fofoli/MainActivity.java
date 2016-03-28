@@ -1,7 +1,6 @@
 package com.waftinc.fofoli;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,10 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.waftinc.fofoli.authentication.LoginActivity;
+import com.waftinc.fofoli.posts.NewPostDialogFragment;
 import com.waftinc.fofoli.utils.Constants;
 
 public class MainActivity extends AppCompatActivity
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                /*AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Confirm").setMessage("Are you ready to distribute?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -53,7 +52,12 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
-                }).show();
+                }).show();*/
+
+                     /* Create an instance of the dialog fragment and show it */
+                DialogFragment dialog = NewPostDialogFragment.newInstance();
+                dialog.show(MainActivity.this.getFragmentManager(), "NewPostDialogFragment");
+
             }
         });
 
