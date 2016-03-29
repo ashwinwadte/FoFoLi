@@ -11,6 +11,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tvUserName, tvUserEmail;
+    RecyclerView recyclerView_all_posts;
 
     Firebase mFirebaseRef;
 
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
+
+        initRecyclerView();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +77,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
         initWidgets(headerView);
+    }
+
+    private void initRecyclerView() {
+        recyclerView_all_posts = (RecyclerView) findViewById(R.id.recycler_view_all_posts);
+        recyclerView_all_posts.setHasFixedSize(true);
+        recyclerView_all_posts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     private void initWidgets(View headerView) {

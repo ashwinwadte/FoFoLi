@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,6 +110,7 @@ public class NewPostDialogFragment extends DialogFragment {
             focusView = etCount;
             cancel = true;
         } else if (Integer.parseInt(userEnteredCount) > 5) {
+            Log.d("raju", userEnteredCount);
             etCount.setError(getString(R.string.error_max_people));
             focusView = etCount;
             cancel = true;
