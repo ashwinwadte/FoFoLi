@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 import com.firebase.client.ServerValue;
 import com.waftinc.fofoli.R;
+import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
 
 /**

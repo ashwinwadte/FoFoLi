@@ -16,7 +16,6 @@
 
     <string name="title_activity_splash">Food For Life</string>
     <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">FOOD\nFOR\nLIFE</string>
     <string name="error_email_taken">Email is already taken</string>
     <string name="title_activity_main">Food For Life</string>
     <string name="hint_count_of_people">Hom many people can be fed?</string>
@@ -24,6 +23,26 @@
     <string name="max_people">*Max. 5 people at a time</string>
     <string name="error_max_people">Max. 5 people allowed</string>
     <string name="food_count">Food For \"%s\" Life available</string>
-    <string name="google_maps_key_debug">AIzaSyBwesHp7EiiIzpCLUnU0-eQT3ZqzZ3BM78</string>
-    <string name="google_maps_key_release"></string>
+    <string name="google_maps_key_debug">AIzaSyAnxqAK-yn9kqVXHdh6URM2xpiq2itvBCA</string>
+    <string name="google_maps_key_release">AIzaSyD7_wmt9aYXijF1F3rRA8nahD2ZxJDMemw</string>
+    <string name="error_ten_digits_number">10 digits long</string>
+
+    <string name="title_activity_about">About</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_help">HelpActivity</string>
+
+
+    <string name="helpText">"<b>A). Food Provider:</b>\n\n
+
+If you have a fresh food remained, from parties, marrige, anniversary or if you are social worker then we are happy to collect food from you.\n
+1.If you are already logged in then click on the \"DONATE\" button on home page of app.\n
+2.Enter the no. of people the food can be fed.\n
+3.That information will be send to food Distributors\n\n
+
+<b>B). Food Distributor:</b>\n\n
+
+1.As soon as Food Distributor Logs in, he can see the list providing the details of food available for disitibution.\n
+2.In list, Food Distributor able to see the details from where to collect food and contact details of the food provider."
+</string>
 </resources>

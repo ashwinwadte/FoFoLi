@@ -22,6 +22,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 import com.waftinc.fofoli.adapters.RecyclerViewPostAdapter;
 import com.waftinc.fofoli.authentication.LoginActivity;
+import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.posts.NewPostDialogFragment;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders;
@@ -86,7 +87,8 @@ public class MainActivity extends AppCompatActivity
 
     private void initRecyclerView() {
         Firebase postRef = new Firebase(Constants.FIREBASE_URL_POSTS);
-        Query postRefQuery = postRef.orderByKey();
+        Query postRefQuery = postRef.orderByChild("timestampCreatedInverse");
+        postRefQuery.keepSynced(true);
 
         recyclerView_all_posts = (RecyclerView) findViewById(R.id.recycler_view_all_posts);
         recyclerView_all_posts.setHasFixedSize(true);
@@ -133,11 +135,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent;
 
         switch (id) {
             case R.id.nav_home:
                 break;
+            case R.id.nav_help:
+                intent = new Intent(getApplication(), HelpActivity.class);
+                startActivity(intent);
+                break;
             case R.id.nav_about:
+                intent = new Intent(getApplication(), AboutActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_logout:
                 logout();

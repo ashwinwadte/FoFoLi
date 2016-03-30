@@ -98,7 +98,11 @@ public class LoginActivity extends Activity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(mPassword) && !isPasswordValid(mPassword)) {
+        if (TextUtils.isEmpty(mPassword)) {
+            etPassword.setError(getString(R.string.error_field_required));
+            focusView = etPassword;
+            cancel = true;
+        } else if (!isPasswordValid(mPassword)) {
             etPassword.setError(getString(R.string.error_short_password));
             focusView = etPassword;
             cancel = true;

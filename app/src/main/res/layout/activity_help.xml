@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f5f2"
+    tools:context="com.waftinc.fofoli.HelpActivity">
+
+    <TextView
+        android:padding="15dp"
+        android:textColor="#000b29"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/helpText"
+        android:singleLine="false"/>
+</FrameLayout>

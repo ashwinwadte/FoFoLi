@@ -19,8 +19,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
-            android:name="com.google.android.maps.API_KEY"
-            android:value="@string/google_maps_key_debug" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key_release" />
 
         <activity
             android:name=".MainActivity"
@@ -43,6 +43,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_about"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".HelpActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_help"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

@@ -27,7 +27,6 @@ import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders.PostViewHolder;
 public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewHolder> {
 
     Context context;
-    String address;
 
     public RecyclerViewPostAdapter(Context context, Class<Post> modelClass, int modelLayout, Class<PostViewHolder> viewHolderClass, Query ref) {
         super(modelClass, modelLayout, viewHolderClass, ref);
@@ -36,8 +35,6 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
 
     @Override
     protected void populateViewHolder(PostViewHolder postViewHolder, Post post, int position) {
-
-        this.address = post.getProviderAddress();
 
         postViewHolder.tvProviderName.setText(post.getProviderName());
         postViewHolder.tvProviderContact.setText(post.getProviderContact());
@@ -65,12 +62,13 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
         viewHolder.bGetDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String address = getItem(position).getProviderAddress();
+
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(mapIntent);
-                Log.d("rajuAddress", address);
             }
         });
 
@@ -78,6 +76,9 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
             @Override
             public void onClick(View v) {
                 setDistributedTrue(viewHolder, position);
+
+//                DialogFragment dialogFragment = DistributionConfirmationDialogFragment.newInstance();
+//                dialogFragment.show();
             }
         });
 
@@ -122,7 +123,12 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
         viewHolder.tvDistribute.setText("Distributed");
         viewHolder.tvDistribute.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_green, 0);
 
-        Snackbar.make(viewHolder.tvDistribute, "Please go to provider, collect and distribute food. Thank you...", Snackbar.LENGTH_LONG).show();
-        Toast.makeText(context, "Please go to provider, collect and distribute food. Thank you...", Toast.LENGTH_LONG).show();
+        Snackbar.make(viewHolder.tvDistribute, "Please go to provider to collect the food and distribute it to poor hungry people near you.", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Thank You for your contribution towards better India...:)", Toast.LENGTH_LONG).show();
+            }
+        }).show();
+        //Toast.makeText(context, "Please go to provider, collect and distribute food. Thank you...", Toast.LENGTH_LONG).show();
     }
 }

@@ -60,6 +60,7 @@
                     android:background="@android:color/white"
                     android:hint="Enter your mobile no."
                     android:inputType="phone"
+                    android:maxLength="10"
                     android:padding="@dimen/edit_text_padding"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
@@ -67,6 +68,26 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/lists_title_bottom_margin"
+                app:hintTextAppearance="@style/HintText">
+
+                <TextView
+                    android:id="@+id/tvGetAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:ellipsize="end"
+                    android:hint="Your Address"
+                    android:onClick="onGetAddressPressed"
+                    android:padding="@dimen/edit_text_padding"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/login_buttons_text_size" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--<android.support.design.widget.TextInputLayout
                 android:id="@+id/til_address_create"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,7 +106,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
                     android:textSize="@dimen/login_buttons_text_size" />
-            </android.support.design.widget.TextInputLayout>
+            </android.support.design.widget.TextInputLayout>-->
 
             <!--<TextView-->
             <!--style="@style/LoginCreateText"-->
@@ -181,26 +202,6 @@
                     android:textSize="@dimen/login_buttons_text_size" />
             </android.support.design.widget.TextInputLayout>
 
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/lists_title_bottom_margin"
-                app:hintTextAppearance="@style/HintText">
-
-                <TextView
-                    android:id="@+id/tvGetAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:ellipsize="end"
-                    android:onClick="onGetAddressPressed"
-                    android:hint="Your Address"
-                    android:padding="@dimen/edit_text_padding"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/login_buttons_text_size" />
-            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_create_account_final"

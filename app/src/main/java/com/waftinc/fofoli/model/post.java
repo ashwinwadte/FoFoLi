@@ -1,5 +1,7 @@
 package com.waftinc.fofoli.model;
 
+import java.util.Date;
+
 /**
  * Created by Ashwin on 30-Mar-16.
  */
@@ -12,6 +14,7 @@ public class Post {
     boolean requestAccepted;
     String distributor;
     Object timestampCreated;
+    Object timestampCreatedInverse;
     Object timestampRequestAccepted;
 
     public Post() {
@@ -19,11 +22,14 @@ public class Post {
 
     public Post(String providerName, String providerContact, String providerAddress, String providerEmail, String peopleCount, Object timestampCreated) {
         this.providerName = providerName;
-        this.providerContact = providerContact;
+        this.providerContact = "+91" + providerContact;
         this.providerAddress = providerAddress;
         this.providerEmail = providerEmail;
         this.peopleCount = peopleCount;
         this.timestampCreated = timestampCreated;
+        this.timestampCreatedInverse = -1 * (new Date().getTime());
+
+        this.requestAccepted = false;
     }
 
     public String getProviderName() {
@@ -50,8 +56,16 @@ public class Post {
         return requestAccepted;
     }
 
+    public void setRequestAccepted(boolean requestAccepted) {
+        this.requestAccepted = requestAccepted;
+    }
+
     public String getDistributor() {
         return distributor;
+    }
+
+    public void setDistributor(String distributor) {
+        this.distributor = distributor;
     }
 
     public Object getTimestampCreated() {
@@ -62,15 +76,11 @@ public class Post {
         return timestampRequestAccepted;
     }
 
-    public void setRequestAccepted(boolean requestAccepted) {
-        this.requestAccepted = requestAccepted;
-    }
-
-    public void setDistributor(String distributor) {
-        this.distributor = distributor;
-    }
-
     public void setTimestampRequestAccepted(Object timestampRequestAccepted) {
         this.timestampRequestAccepted = timestampRequestAccepted;
+    }
+
+    public Object getTimestampCreatedInverse() {
+        return timestampCreatedInverse;
     }
 }

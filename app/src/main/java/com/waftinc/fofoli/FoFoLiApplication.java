@@ -12,5 +12,6 @@ public class FoFoLiApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Firebase.setAndroidContext(getApplicationContext());
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
     }
 }

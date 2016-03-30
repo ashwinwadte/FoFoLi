@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,7 @@ import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.User;
 import com.waftinc.fofoli.utils.Constants;
+import com.waftinc.fofoli.utils.TextDrawable;
 import com.waftinc.fofoli.utils.Utils;
 
 import java.util.HashMap;
@@ -42,6 +44,7 @@ public class CreateAccountActivity extends Activity {
     public static AuthData mAuthData;
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     EditText etName, etContact, etAddress, etEmail, etNewPassword, etConfirmPassword;
+    TextView tvGetAdress;
     ProgressBar progressBar;
     LinearLayout linearLayout;
     private Firebase mFirebaseRef;
@@ -57,6 +60,12 @@ public class CreateAccountActivity extends Activity {
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
         initWidgets();
+        String mCountryCode = "+91";
+
+        int dpPad = (int) (12*getResources().getDisplayMetrics().scaledDensity);
+
+        etContact.setCompoundDrawablesWithIntrinsicBounds(new TextDrawable(mCountryCode, CreateAccountActivity.this), null, null, null);
+        etContact.setCompoundDrawablePadding(mCountryCode.length() * dpPad);
 
         /**
          * Listener for Firebase session changes
@@ -78,11 +87,12 @@ public class CreateAccountActivity extends Activity {
         linearLayout = (LinearLayout) findViewById(R.id.linear_layout_create_account_activity);
         etName = (EditText) findViewById(R.id.edit_text_username_create);
         etContact = (EditText) findViewById(R.id.edit_text_mobile_create);
-        etAddress = (EditText) findViewById(R.id.edit_text_address_create);
+        //etAddress = (EditText) findViewById(R.id.edit_text_address_create);
         etEmail = (EditText) findViewById(R.id.edit_text_email_create);
         etNewPassword = (EditText) findViewById(R.id.edit_text_new_password);
         etConfirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
         progressBar = (ProgressBar) findViewById(R.id.pbCreate);
+        tvGetAdress = (TextView) findViewById(R.id.tvGetAddress);
     }
 
     public void onSignInPressed(View view) {
@@ -99,7 +109,7 @@ public class CreateAccountActivity extends Activity {
         // Reset errors.
         etName.setError(null);
         etContact.setError(null);
-        etAddress.setError(null);
+        tvGetAdress.setError(null);
         etEmail.setError(null);
         etNewPassword.setError(null);
         etConfirmPassword.setError(null);
@@ -107,7 +117,7 @@ public class CreateAccountActivity extends Activity {
         // get the values
         final String mName = etName.getText().toString();
         final String mContact = etContact.getText().toString();
-        final String mAddress = etAddress.getText().toString();
+        final String mAddress = tvGetAdress.getText().toString();
         final String mEmail = etEmail.getText().toString();
         final String mNewPassword = etNewPassword.getText().toString();
         final String mConfirmPassword = etConfirmPassword.getText().toString();
@@ -116,13 +126,15 @@ public class CreateAccountActivity extends Activity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!mNewPassword.equals(mConfirmPassword)) {
+        if (TextUtils.isEmpty(mNewPassword)) {
+            etNewPassword.setError(getString(R.string.error_field_required));
+            focusView = etNewPassword;
+            cancel = true;
+        } else if (!mNewPassword.equals(mConfirmPassword)) {
             etConfirmPassword.setError(getString(R.string.error_password_mismatch));
             focusView = etConfirmPassword;
             cancel = true;
-        }
-
-        if (!TextUtils.isEmpty(mNewPassword) && !isPasswordValid(mNewPassword)) {
+        } else if (!isPasswordValid(mNewPassword)) {
             etNewPassword.setError(getString(R.string.error_invalid_password));
             focusView = etNewPassword;
             cancel = true;
@@ -140,13 +152,17 @@ public class CreateAccountActivity extends Activity {
         }
 
         if (TextUtils.isEmpty(mAddress)) {
-            etAddress.setError(getString(R.string.error_field_required));
-            focusView = etAddress;
+            tvGetAdress.setError(getString(R.string.error_field_required));
+            focusView = tvGetAdress;
             cancel = true;
         }
 
         if (TextUtils.isEmpty(mContact)) {
             etContact.setError(getString(R.string.error_field_required));
+            focusView = etContact;
+            cancel = true;
+        } else if (mContact.length() != 10) {
+            etContact.setError(getString(R.string.error_ten_digits_number));
             focusView = etContact;
             cancel = true;
         }
@@ -284,12 +300,20 @@ public class CreateAccountActivity extends Activity {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
+
+                //etAddress.setText(place.getName());
+
+                String address = (String) place.getAddress();
+                //TODO: log
                 Log.i("rajuP", "Place: " + place.getName());
-                etAddress.setText(place.getName());
+                Log.i("rajuAdd", "Place: " + place.getAddress());
+                Log.i("rajuLat", "Place: " + place.getLatLng());
+
+                tvGetAdress.setText(address);
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
-                Log.i("rajuP1", status.getStatusMessage());
+                Log.i(CreateAccountActivity.class.getSimpleName(), status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
@@ -308,9 +332,9 @@ public class CreateAccountActivity extends Activity {
                             .build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
         } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
         }
     }
+
+
 }
