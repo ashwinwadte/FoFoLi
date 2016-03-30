@@ -26,7 +26,7 @@
             android:layout_margin="10dp"
             android:padding="5dp"
             android:text="Do you have ample amount of fresh food?"
-            android:textColor="#76ff03"
+            android:textColor="#ffffff"
             android:textSize="14sp" />
 
 
