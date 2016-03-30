@@ -15,7 +15,7 @@ import com.firebase.client.Query;
 import com.firebase.client.ServerValue;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 import com.waftinc.fofoli.R;
-import com.waftinc.fofoli.model.Postclass;
+import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.utils.Utils;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders.PostViewHolder;
@@ -23,17 +23,17 @@ import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders.PostViewHolder;
 /**
  * Created by Ashwin on 29-Mar-16.
  */
-public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Postclass, PostViewHolder> {
+public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewHolder> {
 
     Context context;
 
-    public RecyclerViewPostAdapter(Context context, Class<Postclass> modelClass, int modelLayout, Class<PostViewHolder> viewHolderClass, Query ref) {
+    public RecyclerViewPostAdapter(Context context, Class<Post> modelClass, int modelLayout, Class<PostViewHolder> viewHolderClass, Query ref) {
         super(modelClass, modelLayout, viewHolderClass, ref);
         this.context = context;
     }
 
     @Override
-    protected void populateViewHolder(PostViewHolder postViewHolder, Postclass post, int position) {
+    protected void populateViewHolder(PostViewHolder postViewHolder, Post post, int position) {
 
         postViewHolder.tvProviderName.setText(post.getProviderName());
         postViewHolder.tvProviderContact.setText(post.getProviderContact());
@@ -104,7 +104,7 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Postclass, 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String distributor = sp.getString(Constants.USER_EMAIL, "user@example.com");
 
-        Postclass post = getItem(position);
+        Post post = getItem(position);
 
         post.setRequestAccepted(true);
         post.setDistributor(distributor);

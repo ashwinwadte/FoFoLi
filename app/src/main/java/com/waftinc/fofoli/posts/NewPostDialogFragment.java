@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 import com.firebase.client.ServerValue;
 import com.waftinc.fofoli.R;
-import com.waftinc.fofoli.model.Postclass;
+import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
 
 /**
@@ -157,7 +157,7 @@ public class NewPostDialogFragment extends DialogFragment {
 
 
             /* Build the shopping list */
-            Postclass newPost = new Postclass(userName, userContact, userAddress, userEmail, userEnteredCount, ServerValue.TIMESTAMP);
+            Post newPost = new Post(userName, userContact, userAddress, userEmail, userEnteredCount, ServerValue.TIMESTAMP);
 
             //HashMap<String, Object> newPostMap = (HashMap<String, Object>) new ObjectMapper().convertValue(newPost, Map.class);
 

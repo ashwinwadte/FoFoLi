@@ -22,7 +22,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 import com.waftinc.fofoli.adapters.RecyclerViewPostAdapter;
 import com.waftinc.fofoli.authentication.LoginActivity;
-import com.waftinc.fofoli.model.Postclass;
+import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.posts.NewPostDialogFragment;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView_all_posts.setHasFixedSize(true);
         recyclerView_all_posts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        rvPostAdapter = new RecyclerViewPostAdapter(this.getApplicationContext(), Postclass.class, R.layout.card_view_post, AllRecyclerViewHolders.PostViewHolder.class, postRefQuery);
+        rvPostAdapter = new RecyclerViewPostAdapter(this.getApplicationContext(), Post.class, R.layout.card_view_post, AllRecyclerViewHolders.PostViewHolder.class, postRefQuery);
 
         recyclerView_all_posts.setAdapter(rvPostAdapter);
 
