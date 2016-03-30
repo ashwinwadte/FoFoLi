@@ -64,6 +64,7 @@ public class LoginActivity extends Activity {
         /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
          * user and hide any login buttons */
         mFirebaseRef.addAuthStateListener(mAuthStateListener);
+
     }
 
     /**
@@ -98,7 +99,7 @@ public class LoginActivity extends Activity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(mPassword) && !isPasswordValid(mPassword)) {
-            etPassword.setError(getString(R.string.error_invalid_password));
+            etPassword.setError(getString(R.string.error_short_password));
             focusView = etPassword;
             cancel = true;
         }
@@ -143,8 +144,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onAuthenticated(AuthData authData) {
-                progressBar.setVisibility(View.GONE);
-                linearLayout.setVisibility(View.VISIBLE);
+
 
 //                String userEmail = authData.getProviderData().get("email").toString();
                 final String uid = authData.getUid();
@@ -185,9 +185,16 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
+
+                progressBar.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
+
                 if (firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
                     etEmail.requestFocus();
                     etEmail.setError(getString(R.string.error_user_not_registered));
+                } else if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
+                    etPassword.requestFocus();
+                    etPassword.setError(getString(R.string.error_invalid_password));
                 } else {
                     etPassword.requestFocus();
                     showErrorDialog("Network problem!\nPlease try again!");

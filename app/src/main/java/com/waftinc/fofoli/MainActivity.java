@@ -19,15 +19,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.Query;
+import com.waftinc.fofoli.adapters.RecyclerViewPostAdapter;
 import com.waftinc.fofoli.authentication.LoginActivity;
 import com.waftinc.fofoli.posts.NewPostDialogFragment;
 import com.waftinc.fofoli.utils.Constants;
+import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tvUserName, tvUserEmail;
     RecyclerView recyclerView_all_posts;
+    RecyclerViewPostAdapter rvPostAdapter;
 
     Firebase mFirebaseRef;
 
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity
                 DialogFragment dialog = NewPostDialogFragment.newInstance();
                 dialog.show(MainActivity.this.getFragmentManager(), "NewPostDialogFragment");
 
+
             }
         });
 
@@ -80,9 +85,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initRecyclerView() {
+        Firebase postRef = new Firebase(Constants.FIREBASE_URL_POSTS);
+        Query postRefQuery = postRef.orderByKey();
+
         recyclerView_all_posts = (RecyclerView) findViewById(R.id.recycler_view_all_posts);
         recyclerView_all_posts.setHasFixedSize(true);
         recyclerView_all_posts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        rvPostAdapter = new RecyclerViewPostAdapter(this.getApplicationContext(), Post.class, R.layout.card_view_post, AllRecyclerViewHolders.PostViewHolder.class, postRefQuery);
+
+        recyclerView_all_posts.setAdapter(rvPostAdapter);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        rvPostAdapter.cleanup();
     }
 
     private void initWidgets(View headerView) {
@@ -137,5 +156,12 @@ public class MainActivity extends AppCompatActivity
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    public void onDonatePressed(View view) {
+        /* Create an instance of the dialog fragment and show it */
+        DialogFragment dialog = NewPostDialogFragment.newInstance();
+        dialog.show(MainActivity.this.getFragmentManager(), "NewPostDialogFragment");
+
     }
 }

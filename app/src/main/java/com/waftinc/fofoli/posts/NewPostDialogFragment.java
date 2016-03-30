@@ -14,13 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.ServerValue;
 import com.waftinc.fofoli.R;
-import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
 
 /**
@@ -43,6 +43,7 @@ public class NewPostDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     /**
@@ -83,11 +84,28 @@ public class NewPostDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.positive_button_post, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        postNewRequest();
+                        //postNewRequest();
                     }
                 });
 
-        return builder.create();
+        final AlertDialog alert = builder.create();
+
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button button = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //do something
+                        postNewRequest();
+                    }
+                });
+            }
+        });
+
+        //return builder.create();
+        return alert;
     }
 
     /**

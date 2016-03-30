@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -19,6 +20,11 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ServerValue;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.User;
@@ -34,11 +40,10 @@ public class CreateAccountActivity extends Activity {
      * Data from the authenticated user
      */
     public static AuthData mAuthData;
-
+    final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     EditText etName, etContact, etAddress, etEmail, etNewPassword, etConfirmPassword;
     ProgressBar progressBar;
     LinearLayout linearLayout;
-
     private Firebase mFirebaseRef;
 
     @Override
@@ -66,6 +71,7 @@ public class CreateAccountActivity extends Activity {
         /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
          * user and hide any login buttons */
         mFirebaseRef.addAuthStateListener(mAuthStateListener);
+
     }
 
     private void initWidgets() {
@@ -195,8 +201,7 @@ public class CreateAccountActivity extends Activity {
 
             @Override
             public void onAuthenticated(AuthData authData) {
-                progressBar.setVisibility(View.GONE);
-                linearLayout.setVisibility(View.VISIBLE);
+
 
 //                String userEmail = authData.getProviderData().get("email").toString();
                 String uid = authData.getUid();
@@ -222,6 +227,10 @@ public class CreateAccountActivity extends Activity {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
+
+                progressBar.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
+
                 showErrorDialog("Network problem!\nPlease try again!");
 
                 //go to login activity
@@ -262,5 +271,46 @@ public class CreateAccountActivity extends Activity {
                 .setPositiveButton(android.R.string.ok, null)
                 .setIcon(R.drawable.ic_error_outline_24px)
                 .show();
+    }
+
+
+    public void onEditAddressPressed(View view) {
+        openMapPlaceFragment();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                Log.i("rajuP", "Place: " + place.getName());
+                etAddress.setText(place.getName());
+
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                Log.i("rajuP1", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+    }
+
+    public void onGetAddressPressed(View view) {
+        openMapPlaceFragment();
+    }
+
+    private void openMapPlaceFragment() {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
     }
 }

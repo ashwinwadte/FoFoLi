@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">" FoFoLi"</string>
+    <string name="app_name">"Food For Life"</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,7 +8,8 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_create_account">Create New Account</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_password">Wrong password</string>
+    <string name="error_short_password">This password is too short</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_user_not_registered">This email is not registered</string>
     <string name="error_password_mismatch">Password doesn`t match</string>
@@ -18,8 +19,11 @@
     <string name="dummy_content">FOOD\nFOR\nLIFE</string>
     <string name="error_email_taken">Email is already taken</string>
     <string name="title_activity_main">Food For Life</string>
-    <string name="hint_count_of_people">No. of people can be satisfied</string>
+    <string name="hint_count_of_people">Hom many people can be fed?</string>
     <string name="positive_button_post">Post</string>
     <string name="max_people">*Max. 5 people at a time</string>
     <string name="error_max_people">Max. 5 people allowed</string>
+    <string name="food_count">Food For \"%s\" Life available</string>
+    <string name="google_maps_key_debug">AIzaSyBwesHp7EiiIzpCLUnU0-eQT3ZqzZ3BM78</string>
+    <string name="google_maps_key_release"></string>
 </resources>

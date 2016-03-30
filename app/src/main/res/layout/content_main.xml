@@ -4,22 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFFFFF"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.waftinc.fofoli.MainActivity"
     tools:showIn="@layout/app_bar_main">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_NewRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#CD0E3E"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvNewRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:text="Do you have ample amount of fresh food?"
+            android:textColor="#76ff03"
+            android:textSize="14sp" />
+
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="#f57f17"
+            android:onClick="onDonatePressed"
+            android:text="Donate"
+            android:textSize="13sp" />
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_all_posts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+        android:layout_below="@+id/linear_layout_NewRequest"
+        android:background="#FFFFFF" />
 
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone">

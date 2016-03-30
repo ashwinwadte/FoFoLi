@@ -1,11 +1,7 @@
 package com.waftinc.fofoli.model;
 
-import com.firebase.client.ServerValue;
-
-import java.util.HashMap;
-
 /**
- * Created by Ashwin on 28-Mar-16.
+ * Created by Ashwin on 30-Mar-16.
  */
 public class Post {
     String providerName;
@@ -64,5 +60,17 @@ public class Post {
 
     public Object getTimestampRequestAccepted() {
         return timestampRequestAccepted;
+    }
+
+    public void setRequestAccepted(boolean requestAccepted) {
+        this.requestAccepted = requestAccepted;
+    }
+
+    public void setDistributor(String distributor) {
+        this.distributor = distributor;
+    }
+
+    public void setTimestampRequestAccepted(Object timestampRequestAccepted) {
+        this.timestampRequestAccepted = timestampRequestAccepted;
     }
 }
