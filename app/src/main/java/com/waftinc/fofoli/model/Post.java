@@ -16,6 +16,7 @@ public class Post {
     Object timestampCreated;
     Object timestampCreatedInverse;
     Object timestampRequestAccepted;
+    String justForFun;
 
     public Post() {
     }
