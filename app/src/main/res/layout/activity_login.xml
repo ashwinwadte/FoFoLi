@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/loginLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#1976d2"
-    android:fillViewport="true"
-    tools:context=".authentication.LoginActivity">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/loginLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#1976d2"
+            android:fillViewport="true"
+            tools:context=".authentication.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,13 +25,6 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:visibility="visible">
 
-            <!--<LinearLayout-->
-            <!--android:layout_width="0px"-->
-            <!--android:layout_height="0px"-->
-            <!--android:focusable="true"-->
-            <!--android:focusableInTouchMode="true" />-->
-
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_email"
                 android:layout_width="match_parent"
@@ -44,13 +37,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
-                    android:hint="Enter your email"
+                    android:hint="@string/enter_your_email"
                     android:inputType="textEmailAddress"
                     android:nextFocusDown="@+id/edit_text_password"
                     android:padding="@dimen/edit_text_padding"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/login_buttons_text_size" />
+                    android:textSize="@dimen/login_buttons_text_size"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -65,13 +58,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
-                    android:hint="Enter password"
+                    android:hint="@string/enter_password"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:padding="@dimen/edit_text_padding"
                     android:textColor="@color/black"
                     android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/login_buttons_text_size" />
+                    android:textSize="@dimen/login_buttons_text_size"/>
             </android.support.design.widget.TextInputLayout>
 
             <Button
@@ -81,9 +74,10 @@
                 android:layout_height="@dimen/input_field_height"
                 android:layout_marginBottom="@dimen/lv_header_text_size"
                 android:background="@color/primary"
+                android:contentDescription="@string/sign_in"
                 android:onClick="onSignInPressed"
-                android:text="Sign in"
-                android:textColor="@android:color/white" />
+                android:text="@string/sign_in"
+                android:textColor="@android:color/white"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,7 +91,7 @@
                     style="@style/LoginCreateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Don`t have account" />
+                    android:text="@string/no_account"/>
 
                 <TextView
                     android:id="@+id/tv_sign_up"
@@ -105,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onSignUpPressed"
-                    android:text="Sign Up" />
+                    android:text="@string/sign_up"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -116,7 +110,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:visibility="gone" />
+            android:visibility="gone"/>
     </RelativeLayout>
 </ScrollView>
 

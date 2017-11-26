@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="91dp"
-        android:text="Food For Life"
+        android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#fe0000"
         android:textSize="24sp" />
@@ -25,7 +25,7 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="3dp"
-        android:text="Version 1.0"
+        android:text="@string/string_version"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
@@ -34,6 +34,7 @@
         android:layout_height="100dp"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
         android:layout_marginTop="5dp"
         android:src="@mipmap/ic_launcher" />
 
@@ -44,7 +45,7 @@
         android:layout_below="@+id/imageView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:text="Created By"
+        android:text="@string/created_by"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -54,6 +55,6 @@
         android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="Ashwin Wadte"
+        android:text="@string/ashwin_wadte"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>

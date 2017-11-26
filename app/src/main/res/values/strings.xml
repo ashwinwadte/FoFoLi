@@ -12,9 +12,8 @@
     <string name="error_short_password">This password is too short</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_user_not_registered">This email is not registered</string>
-    <string name="error_password_mismatch">Password doesn`t match</string>
+    <string name="error_password_mismatch">Password does not match</string>
 
-    <string name="title_activity_splash">Food For Life</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="error_email_taken">Email is already taken</string>
     <string name="title_activity_main">Food For Life</string>
@@ -77,4 +76,18 @@ If you have a fresh food remained, from parties, marriage, anniversary or if you
     <string name="string_already_distributed">Food is already distributed</string>
     <string name="appwidget_text">Donate Food</string>
     <string name="add_widget">Add widget</string>
+    <string name="string_version">Version 1.0</string>
+    <string name="created_by">Created By</string>
+    <string name="ashwin_wadte">Ashwin Wadte</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_mobile_no">Enter your mobile no.</string>
+    <string name="your_address">Your Address</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="enter_password">Enter password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="no_account">Don`t have account</string>
 </resources>

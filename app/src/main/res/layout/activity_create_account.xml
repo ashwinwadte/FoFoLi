@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
-                    android:hint="Enter your name"
+                    android:hint="@string/enter_your_name"
                     android:inputType="textCapWords"
                     android:padding="@dimen/edit_text_padding"
                     android:textColor="@color/black"
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
-                    android:hint="Enter your mobile no."
+                    android:hint="@string/enter_your_mobile_no"
                     android:inputType="phone"
                     android:maxLength="10"
                     android:padding="@dimen/edit_text_padding"
@@ -79,66 +79,13 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:ellipsize="end"
-                    android:hint="Your Address"
+                    android:hint="@string/your_address"
                     android:onClick="onGetAddressPressed"
                     android:padding="@dimen/edit_text_padding"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:textSize="@dimen/login_buttons_text_size" />
             </android.support.design.widget.TextInputLayout>
-
-            <!--<android.support.design.widget.TextInputLayout
-                android:id="@+id/til_address_create"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/lists_title_bottom_margin"
-                app:hintTextAppearance="@style/HintText">
-
-                <EditText
-                    android:id="@+id/edit_text_address_create"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:hint="Place you stay more at"
-                    android:inputType="textPostalAddress"
-                    android:onClick="onEditAddressPressed"
-                    android:padding="@dimen/edit_text_padding"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/login_buttons_text_size" />
-            </android.support.design.widget.TextInputLayout>-->
-
-            <!--<TextView-->
-            <!--style="@style/LoginCreateText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="You are food:" />-->
-
-            <!--<RadioGroup-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content">-->
-
-            <!--<RadioButton-->
-            <!--android:id="@+id/radioButton"-->
-            <!--style="@style/LoginCreateText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Provider" />-->
-
-            <!--<RadioButton-->
-            <!--android:id="@+id/radioButton2"-->
-            <!--style="@style/LoginCreateText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Distributer" />-->
-
-            <!--<RadioButton-->
-            <!--android:id="@+id/radioButton3"-->
-            <!--style="@style/LoginCreateText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Both" />-->
-            <!--</RadioGroup>-->
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_email_create"
@@ -152,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
-                    android:hint="Enter your email"
+                    android:hint="@string/enter_your_email"
                     android:inputType="textEmailAddress"
                     android:padding="@dimen/edit_text_padding"
                     android:textColor="@color/black"
@@ -172,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
-                    android:hint="New password"
+                    android:hint="@string/new_password"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:padding="@dimen/edit_text_padding"
@@ -193,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
-                    android:hint="Confirm password"
+                    android:hint="@string/confirm_password"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:padding="@dimen/edit_text_padding"
@@ -211,6 +158,7 @@
                 android:onClick="onCreateAccountPressed"
                 android:text="@string/title_activity_create_account"
                 android:textColor="@android:color/white"
+                android:contentDescription="@string/title_activity_create_account"
                 android:textSize="@dimen/login_buttons_text_size" />
 
             <LinearLayout
@@ -225,7 +173,7 @@
                     style="@style/LoginCreateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Already have an account?" />
+                    android:text="@string/already_have_an_account" />
 
                 <TextView
                     android:id="@+id/tv_sign_in"
@@ -233,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onSignInPressed"
-                    android:text="Sign in" />
+                    android:text="@string/sign_in" />
             </LinearLayout>
         </LinearLayout>
 
