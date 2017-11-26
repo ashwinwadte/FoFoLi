@@ -26,8 +26,10 @@
 
 
     <!--keys-->
-    <string name="google_maps_key_debug">AIzaSyAnxqAK-yn9kqVXHdh6URM2xpiq2itvBCA</string>
-    <string name="google_maps_key_release">AIzaSyD7_wmt9aYXijF1F3rRA8nahD2ZxJDMemw</string>
+    <string name="google_maps_key_debug" translatable="false">AIzaSyAnxqAK-yn9kqVXHdh6URM2xpiq2itvBCA</string>
+    <string name="google_maps_key_release" translatable="false">AIzaSyD7_wmt9aYXijF1F3rRA8nahD2ZxJDMemw</string>
+
+
     <string name="error_ten_digits_number">10 digits long</string>
 
     <string name="title_activity_about">About</string>
@@ -59,11 +61,10 @@ If you have a fresh food remained, from parties, marriage, anniversary or if you
     <string name="distribute_food">Distribute Food</string>
     <string name="navigate">Navigate</string>
     <string name="address">Address</string>
-    <string name="string_go_to_provider">Please go to provider to collect the food and distribute it to poor hungry people near you.</string>
+    <string name="string_go_to_provider">Please collect the food and distribute to poor hungry people near you.</string>
     <string name="string_thank_you">Thank You for your contribution towards better India…:)</string>
     <string name="string_default_email">user@example.com</string>
     <string name="string_ok">OK</string>
-    <string name="india_code">+91</string>
     <string name="string_new_account_created">New account created</string>
     <string name="string_network_error">Check your network</string>
     <string name="string_error">Error</string>

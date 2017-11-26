@@ -1,6 +1,7 @@
 package com.waftinc.fofoli.model;
 
 import com.waftinc.fofoli.R;
+import com.waftinc.fofoli.utils.Constants;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class Post {
     public Post(String providerName, String providerContact, String providerAddress, String providerEmail, String
             peopleCount, Object timestampCreated) {
         this.providerName = providerName;
-        this.providerContact = R.string.india_code + providerContact;
+        this.providerContact = Constants.INDIA_CODE + providerContact;
         this.providerAddress = providerAddress;
         this.providerEmail = providerEmail;
         this.peopleCount = peopleCount;

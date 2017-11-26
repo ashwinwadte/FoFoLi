@@ -1,8 +1,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/widget_margin">
+    android:layout_height="match_parent">
 
     <ImageButton
         android:id="@+id/appwidget_logo"
@@ -10,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/rounded_rectangle"
+        android:background="@drawable/appwidget_dark_bg_clickable"
         android:contentDescription="@string/appwidget_text"
         android:src="@mipmap/ic_launcher"/>
 

@@ -24,8 +24,11 @@ import com.firebase.client.ServerValue;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.User;
@@ -74,7 +77,7 @@ public class CreateAccountActivity extends Activity {
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
-        String mCountryCode = getString(R.string.india_code);
+        String mCountryCode = Constants.INDIA_CODE;
 
         int dpPad = (int) (12 * getResources().getDisplayMetrics().scaledDensity);
 
@@ -191,7 +194,8 @@ public class CreateAccountActivity extends Activity {
             mFirebaseRef.createUser(mEmail, mNewPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
-                    Toast.makeText(getApplicationContext(), R.string.string_new_account_created, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.string_new_account_created, Toast.LENGTH_SHORT)
+                            .show();
                     addUserToFirebase(newUser, mEmail);
                     loginWithPassword(mEmail, mNewPassword, newUser);
                 }
@@ -327,9 +331,19 @@ public class CreateAccountActivity extends Activity {
 
     private void openMapPlaceFragment() {
         try {
+            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                    .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                    .build();
+
+
             Intent intent =
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .setBoundsBias(new LatLngBounds(
+                                    new LatLng(Constants.SOUTHWEST_LAT, Constants.SOUTHWEST_LONG),
+                                    new LatLng(Constants.NORTHEAST_LAT, Constants.NORTHEAST_LONG)))
+                            .setFilter(typeFilter)
                             .build(this);
+
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
             Log.e(TAG, "Google Play Service Error: " + e);

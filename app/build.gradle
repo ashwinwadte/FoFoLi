@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs{
+        release{
+            storeFile file("$rootDir/fofoli.keystore.jks")
+            storePassword "fofoliPassword"
+            keyAlias "fofoliKey"
+            keyPassword "fofoliPassword"
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
@@ -10,11 +18,14 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
         }
     }
     packagingOptions {
@@ -40,7 +51,7 @@ dependencies {
 
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.firebaseui:firebase-ui:0.3.1'
-    compile 'com.google.android.gms:play-services:11.6.0'
+    compile 'com.google.android.gms:play-services-places:11.6.0'
 
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'

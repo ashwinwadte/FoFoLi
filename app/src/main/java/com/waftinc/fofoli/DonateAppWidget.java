@@ -23,6 +23,7 @@ public class DonateAppWidget extends AppWidgetProvider {
 
         // Create an Intent to launch MainActivity when clicked
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(MainActivity.SHOW_DONATE_DIALOG, true);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         views.setOnClickPendingIntent(R.id.appwidget_logo, pendingIntent);

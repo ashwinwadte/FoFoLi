@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static final String SHOW_DONATE_DIALOG = "SHOW_DONATE_DIALOG";
 
     TextView tvUserName, tvUserEmail;
 
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity
     RecyclerViewPostAdapter rvPostAdapter;
 
     Firebase mFirebaseRef;
+
+    boolean mShowDonateDialog = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,25 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
 
         initWidgets(mNavigationView.getHeaderView(0));
+
+
+        mShowDonateDialog = getIntent().getBooleanExtra(SHOW_DONATE_DIALOG, false);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mFirebaseRef.getAuth();
+
+        if (mShowDonateDialog)
+            ShowDonateDialog();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mShowDonateDialog = false;
     }
 
     private void initRecyclerView() {
@@ -151,9 +173,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onDonatePressed(View view) {
+        ShowDonateDialog();
+    }
+
+    public void ShowDonateDialog() {
         /* Create an instance of the dialog fragment and show it */
         DialogFragment dialog = NewPostDialogFragment.newInstance();
         dialog.show(MainActivity.this.getFragmentManager(), NewPostDialogFragment.TAG);
-
     }
 }
