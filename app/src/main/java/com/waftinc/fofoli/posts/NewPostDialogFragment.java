@@ -24,10 +24,12 @@ import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
 
-/**
- * Adds a new shopping list
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NewPostDialogFragment extends DialogFragment {
+    public static final String TAG = "NewPostDialogFragment";
+    @BindView(R.id.edit_text_count_of_people)
     EditText etCount;
 
     /**
@@ -63,11 +65,11 @@ public class NewPostDialogFragment extends DialogFragment {
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View rootView = inflater.inflate(R.layout.dialog_new_post, null);
-        etCount = (EditText) rootView.findViewById(R.id.edit_text_count_of_people);
 
-        /**
-         * Call postNewRequest() when user taps "Done" keyboard action
-         */
+        ButterKnife.bind(this, rootView);
+
+
+        // Call postNewRequest() when user taps "Done" keyboard action
         etCount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -121,15 +123,12 @@ public class NewPostDialogFragment extends DialogFragment {
         View focusView = null;
 
 
-        /**
-         * If EditText input is not empty
-         */
+        // If EditText input is not empty
         if (TextUtils.isEmpty(userEnteredCount)) {
             etCount.setError(getString(R.string.error_field_required));
             focusView = etCount;
             cancel = true;
         } else if (Integer.parseInt(userEnteredCount) > 5) {
-            Log.d("raju", userEnteredCount);
             etCount.setError(getString(R.string.error_max_people));
             focusView = etCount;
             cancel = true;
@@ -143,23 +142,24 @@ public class NewPostDialogFragment extends DialogFragment {
 
             /* Get user data from sp*/
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String userName = sp.getString(Constants.USER_NAME, "User");
-            String userContact = sp.getString(Constants.USER_CONTACT, "9876543210");
-            String userAddress = sp.getString(Constants.USER_ADDRESS, "City, India");
-            String userEmail = sp.getString(Constants.USER_EMAIL, "user@example.com");
-            String encodedEmail = sp.getString(Constants.ENCODED_EMAIL, "user@example,com");
+            String userName = sp.getString(Constants.USER_NAME, getString(R.string.default_user_name));
+            String userContact = sp.getString(Constants.USER_CONTACT, getString(R.string.default_contact_number));
+            String userAddress = sp.getString(Constants.USER_ADDRESS, getString(R.string.default_address));
+            String userEmail = sp.getString(Constants.USER_EMAIL, getString(R.string.string_default_email));
+            String encodedEmail = sp.getString(Constants.ENCODED_EMAIL, getString(R.string.default_encoded_email));
 
-            /**
-             * Create Firebase references
-             */
+            // Create Firebase references
             Firebase newPostRef = new Firebase(Constants.FIREBASE_URL_POSTS);
-            Firebase userNewPostRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail).child(Constants.FIREBASE_LOCATION_USER_POSTS);
+            Firebase userNewPostRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
+                    .child(Constants.FIREBASE_LOCATION_USER_POSTS);
 
 
             /* Build the shopping list */
-            Post newPost = new Post(userName, userContact, userAddress, userEmail, userEnteredCount, ServerValue.TIMESTAMP);
+            Post newPost = new Post(userName, userContact, userAddress, userEmail, userEnteredCount, ServerValue
+                    .TIMESTAMP);
 
-            //HashMap<String, Object> newPostMap = (HashMap<String, Object>) new ObjectMapper().convertValue(newPost, Map.class);
+            //HashMap<String, Object> newPostMap = (HashMap<String, Object>) new ObjectMapper().convertValue(newPost,
+            // Map.class);
 
             Firebase newPostRefId = newPostRef.push();
             final String postId = newPostRefId.getKey();

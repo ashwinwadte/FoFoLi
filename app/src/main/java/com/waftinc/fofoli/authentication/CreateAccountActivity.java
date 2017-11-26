@@ -36,40 +36,54 @@ import com.waftinc.fofoli.utils.Utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CreateAccountActivity extends Activity {
+    private static final String TAG = CreateAccountActivity.class.getSimpleName();
 
     /**
      * Data from the authenticated user
      */
     public static AuthData mAuthData;
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-    EditText etName, etContact, etAddress, etEmail, etNewPassword, etConfirmPassword;
-    TextView tvGetAdress;
+    @BindView(R.id.edit_text_username_create)
+    EditText etName;
+    @BindView(R.id.edit_text_mobile_create)
+    EditText etContact;
+    @BindView(R.id.edit_text_email_create)
+    EditText etEmail;
+    @BindView(R.id.edit_text_new_password)
+    EditText etNewPassword;
+    @BindView(R.id.edit_text_confirm_password)
+    EditText etConfirmPassword;
+    @BindView(R.id.tvGetAddress)
+    TextView tvGetAddress;
+    @BindView(R.id.pbCreate)
     ProgressBar progressBar;
+    @BindView(R.id.linear_layout_create_account_activity)
     LinearLayout linearLayout;
+
     private Firebase mFirebaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-
-//        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.createAccountLayout);
-//        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
+        ButterKnife.bind(this);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
-        initWidgets();
-        String mCountryCode = "+91";
+        String mCountryCode = getString(R.string.india_code);
 
-        int dpPad = (int) (12*getResources().getDisplayMetrics().scaledDensity);
+        int dpPad = (int) (12 * getResources().getDisplayMetrics().scaledDensity);
 
-        etContact.setCompoundDrawablesWithIntrinsicBounds(new TextDrawable(mCountryCode, CreateAccountActivity.this), null, null, null);
+        etContact
+                .setCompoundDrawablesWithIntrinsicBounds(new TextDrawable(mCountryCode, CreateAccountActivity.this),
+                        null, null, null);
         etContact.setCompoundDrawablePadding(mCountryCode.length() * dpPad);
 
-        /**
-         * Listener for Firebase session changes
-         */
+        // Listener for Firebase session changes
         Firebase.AuthStateListener mAuthStateListener = new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
@@ -77,22 +91,10 @@ public class CreateAccountActivity extends Activity {
             }
         };
 
-        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
-         * user and hide any login buttons */
+        // Check if the user is authenticated with Firebase already.
+        // If this is the case we can set the authenticated user and hide any login buttons.
         mFirebaseRef.addAuthStateListener(mAuthStateListener);
 
-    }
-
-    private void initWidgets() {
-        linearLayout = (LinearLayout) findViewById(R.id.linear_layout_create_account_activity);
-        etName = (EditText) findViewById(R.id.edit_text_username_create);
-        etContact = (EditText) findViewById(R.id.edit_text_mobile_create);
-        //etAddress = (EditText) findViewById(R.id.edit_text_address_create);
-        etEmail = (EditText) findViewById(R.id.edit_text_email_create);
-        etNewPassword = (EditText) findViewById(R.id.edit_text_new_password);
-        etConfirmPassword = (EditText) findViewById(R.id.edit_text_confirm_password);
-        progressBar = (ProgressBar) findViewById(R.id.pbCreate);
-        tvGetAdress = (TextView) findViewById(R.id.tvGetAddress);
     }
 
     public void onSignInPressed(View view) {
@@ -109,7 +111,7 @@ public class CreateAccountActivity extends Activity {
         // Reset errors.
         etName.setError(null);
         etContact.setError(null);
-        tvGetAdress.setError(null);
+        tvGetAddress.setError(null);
         etEmail.setError(null);
         etNewPassword.setError(null);
         etConfirmPassword.setError(null);
@@ -117,7 +119,7 @@ public class CreateAccountActivity extends Activity {
         // get the values
         final String mName = etName.getText().toString();
         final String mContact = etContact.getText().toString();
-        final String mAddress = tvGetAdress.getText().toString();
+        final String mAddress = tvGetAddress.getText().toString();
         final String mEmail = etEmail.getText().toString();
         final String mNewPassword = etNewPassword.getText().toString();
         final String mConfirmPassword = etConfirmPassword.getText().toString();
@@ -152,8 +154,8 @@ public class CreateAccountActivity extends Activity {
         }
 
         if (TextUtils.isEmpty(mAddress)) {
-            tvGetAdress.setError(getString(R.string.error_field_required));
-            focusView = tvGetAdress;
+            tvGetAddress.setError(getString(R.string.error_field_required));
+            focusView = tvGetAddress;
             cancel = true;
         }
 
@@ -189,7 +191,7 @@ public class CreateAccountActivity extends Activity {
             mFirebaseRef.createUser(mEmail, mNewPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
-                    Toast.makeText(getApplicationContext(), "New account created", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.string_new_account_created, Toast.LENGTH_SHORT).show();
                     addUserToFirebase(newUser, mEmail);
                     loginWithPassword(mEmail, mNewPassword, newUser);
                 }
@@ -204,7 +206,7 @@ public class CreateAccountActivity extends Activity {
                         etEmail.setError(getString(R.string.error_email_taken));
                     } else {
                         etConfirmPassword.requestFocus();
-                        showErrorDialog("Network problem!\nPlease try again!");
+                        showErrorDialog(getString(R.string.string_network_error));
                     }
                 }
             });
@@ -218,8 +220,6 @@ public class CreateAccountActivity extends Activity {
             @Override
             public void onAuthenticated(AuthData authData) {
 
-
-//                String userEmail = authData.getProviderData().get("email").toString();
                 String uid = authData.getUid();
 
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(CreateAccountActivity.this);
@@ -247,7 +247,7 @@ public class CreateAccountActivity extends Activity {
                 progressBar.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.VISIBLE);
 
-                showErrorDialog("Network problem!\nPlease try again!");
+                showErrorDialog(getString(R.string.string_network_error));
 
                 //go to login activity
                 Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
@@ -261,7 +261,8 @@ public class CreateAccountActivity extends Activity {
     private void addUserToFirebase(User user, String mEmail) {
         String encodedEmail = Utils.encodeEmail(mEmail);
 
-        Firebase userInfo = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail).child(Constants.FIREBASE_LOCATION_USER_INFO);
+        Firebase userInfo = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
+                .child(Constants.FIREBASE_LOCATION_USER_INFO);
 
         HashMap<String, Object> newUserMap = (HashMap<String, Object>) new ObjectMapper().convertValue(user, Map.class);
 
@@ -282,7 +283,7 @@ public class CreateAccountActivity extends Activity {
      */
     private void showErrorDialog(String message) {
         new AlertDialog.Builder(this)
-                .setTitle("Error")
+                .setTitle(R.string.string_error)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .setIcon(R.drawable.ic_error_outline_24px)
@@ -304,19 +305,18 @@ public class CreateAccountActivity extends Activity {
                 //etAddress.setText(place.getName());
 
                 String address = (String) place.getAddress();
-                //TODO: log
-                Log.i("rajuP", "Place: " + place.getName());
-                Log.i("rajuAdd", "Place: " + place.getAddress());
-                Log.i("rajuLat", "Place: " + place.getLatLng());
+                Log.i(TAG, "Place name: " + place.getName() + " address: " + place.getAddress() + " lat-lang: " + place
+                        .getLatLng());
 
-                tvGetAdress.setText(address);
+                tvGetAddress.setText(address);
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
-                Log.i(CreateAccountActivity.class.getSimpleName(), status.getStatusMessage());
+                Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
+                Log.i(TAG, "user cancelled the operation");
             }
         }
     }
@@ -332,7 +332,9 @@ public class CreateAccountActivity extends Activity {
                             .build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
+            Log.e(TAG, "Google Play Service Error: " + e);
         } catch (GooglePlayServicesNotAvailableException e) {
+            Log.e(TAG, "Google Play Service Not available: " + e);
         }
     }
 

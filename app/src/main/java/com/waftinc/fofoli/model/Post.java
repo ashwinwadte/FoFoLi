@@ -1,28 +1,28 @@
 package com.waftinc.fofoli.model;
 
+import com.waftinc.fofoli.R;
+
 import java.util.Date;
 
-/**
- * Created by Ashwin on 30-Mar-16.
- */
 public class Post {
-    String providerName;
-    String providerContact;
-    String providerAddress;
-    String providerEmail;
-    String peopleCount;
-    boolean requestAccepted;
-    String distributor;
-    Object timestampCreated;
-    Object timestampCreatedInverse;
-    Object timestampRequestAccepted;
+    private String providerName;
+    private String providerContact;
+    private String providerAddress;
+    private String providerEmail;
+    private String peopleCount;
+    private boolean requestAccepted;
+    private String distributor;
+    private Object timestampCreated;
+    private Object timestampCreatedInverse;
+    private Object timestampRequestAccepted;
 
     public Post() {
     }
 
-    public Post(String providerName, String providerContact, String providerAddress, String providerEmail, String peopleCount, Object timestampCreated) {
+    public Post(String providerName, String providerContact, String providerAddress, String providerEmail, String
+            peopleCount, Object timestampCreated) {
         this.providerName = providerName;
-        this.providerContact = "+91" + providerContact;
+        this.providerContact = R.string.india_code + providerContact;
         this.providerAddress = providerAddress;
         this.providerEmail = providerEmail;
         this.peopleCount = peopleCount;

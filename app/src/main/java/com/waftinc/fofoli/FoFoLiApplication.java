@@ -4,9 +4,6 @@ import android.app.Application;
 
 import com.firebase.client.Firebase;
 
-/**
- * Created by Ashwin on 27-Mar-16.
- */
 public class FoFoLiApplication extends Application {
     @Override
     public void onCreate() {

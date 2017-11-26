@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,11 +26,23 @@ import com.waftinc.fofoli.posts.NewPostDialogFragment;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView tvUserName, tvUserEmail;
-    RecyclerView recyclerView_all_posts;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawer;
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
+    @BindView(R.id.recycler_view_all_posts)
+    RecyclerView mRecyclerView_all_posts;
+
     RecyclerViewPostAdapter rvPostAdapter;
 
     Firebase mFirebaseRef;
@@ -40,63 +51,38 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
         initRecyclerView();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Confirm").setMessage("Are you ready to distribute?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplication(), "Please go to provider and distribute food. Thank you...", Toast.LENGTH_LONG).show();
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                }).show();*/
-
-                     /* Create an instance of the dialog fragment and show it */
-                DialogFragment dialog = NewPostDialogFragment.newInstance();
-                dialog.show(MainActivity.this.getFragmentManager(), "NewPostDialogFragment");
-
-
-            }
-        });
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
-        initWidgets(headerView);
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+        initWidgets(mNavigationView.getHeaderView(0));
     }
 
     private void initRecyclerView() {
         Firebase postRef = new Firebase(Constants.FIREBASE_URL_POSTS);
-        Query postRefQuery = postRef.orderByChild("timestampCreatedInverse");
+        Query postRefQuery = postRef.orderByChild(Constants.FIREBASE_QUERY_TIMESTAMP);
         postRefQuery.keepSynced(true);
 
-        recyclerView_all_posts = (RecyclerView) findViewById(R.id.recycler_view_all_posts);
-        recyclerView_all_posts.setHasFixedSize(true);
-        recyclerView_all_posts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRecyclerView_all_posts.setHasFixedSize(true);
+        mRecyclerView_all_posts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        rvPostAdapter = new RecyclerViewPostAdapter(this.getApplicationContext(), Post.class, R.layout.card_view_post, AllRecyclerViewHolders.PostViewHolder.class, postRefQuery);
+        rvPostAdapter = new RecyclerViewPostAdapter(this
+                .getApplicationContext(), Post.class, R.layout.card_view_post, AllRecyclerViewHolders.PostViewHolder
+                .class, postRefQuery);
 
-        recyclerView_all_posts.setAdapter(rvPostAdapter);
+        mRecyclerView_all_posts.setAdapter(rvPostAdapter);
 
     }
 
@@ -112,18 +98,17 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        String name = sp.getString(Constants.USER_NAME, "User");
-        String email = sp.getString(Constants.USER_EMAIL, "user@example.com");
+        String name = sp.getString(Constants.USER_NAME, getString(R.string.default_user_name));
+        String email = sp.getString(Constants.USER_EMAIL, getString(R.string.string_default_email));
 
-        tvUserName.setText(String.format("Hello %s", name));
+        tvUserName.setText(name);
         tvUserEmail.setText(email);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -152,9 +137,7 @@ public class MainActivity extends AppCompatActivity
                 logout();
                 break;
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -170,7 +153,7 @@ public class MainActivity extends AppCompatActivity
     public void onDonatePressed(View view) {
         /* Create an instance of the dialog fragment and show it */
         DialogFragment dialog = NewPostDialogFragment.newInstance();
-        dialog.show(MainActivity.this.getFragmentManager(), "NewPostDialogFragment");
+        dialog.show(MainActivity.this.getFragmentManager(), NewPostDialogFragment.TAG);
 
     }
 }

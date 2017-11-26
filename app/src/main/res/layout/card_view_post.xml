@@ -1,14 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:layout_gravity="center"
-    android:layout_margin="10dp"
-    android:padding="5dp"
-    card_view:cardBackgroundColor="#FAFAFA"
-    card_view:cardCornerRadius="4dp">
+    android:layout_margin="4dp"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,79 +16,89 @@
             android:id="@+id/tvProviderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
+            android:layout_alignParentStart="true"
             android:layout_marginTop="12dp"
-            android:text="Hotel Govinda`s"
+            android:layout_toStartOf="@+id/tvTimestamp"
+            android:ellipsize="end"
+            android:text="@string/default_user_name"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="24sp"/>
 
         <TextView
             android:id="@+id/tvTimestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="5 min. ago"
+            android:layout_marginStart="5dp"
+            android:text="@string/timestamp"
             android:textColor="#C6E4FB"
-            android:textSize="10sp" />
+            android:textSize="12sp"/>
 
-        <TextView
-            android:id="@+id/icon_Phone"
+        <ImageButton
+            android:id="@+id/icon_phone"
             style="@style/Icon"
             android:layout_below="@+id/tvProviderName"
-            android:background="@drawable/ic_phone_24dp" />
-
+            android:background="@drawable/ic_phone_24dp"
+            android:contentDescription="@string/icon_phone"/>
 
         <TextView
             android:id="@+id/tvContact"
             style="@style/IconText"
-            android:layout_alignTop="@+id/icon_Phone"
+            android:layout_alignTop="@+id/icon_phone"
             android:autoLink="phone"
             android:linksClickable="true"
-            android:text="9876543210" />
+            android:text="@string/default_contact_number"/>
 
-        <TextView
-            android:id="@+id/icon_venue"
-            style="@style/Icon"
+
+        <LinearLayout
+            android:id="@+id/address_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tvContact"
-            android:background="@drawable/ic_location_on_24dp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/icon_venue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_location_on_24dp"
+                android:contentDescription="@string/icon_address"/>
+
+            <TextView
+                android:id="@+id/tvAddress"
+                style="@style/IconText"
+                android:layout_marginStart="10dp"
+                android:ellipsize="end"
+                android:ems="14"
+                android:maxLines="3"
+                android:singleLine="false"
+                android:text="@string/address"/>
+
+            <Button
+                android:id="@+id/bGetDirections"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="#ff6f00"
+                android:text="@string/navigate"
+                android:textColor="#ffffff"
+                android:textSize="12sp"/>
 
 
-        <TextView
-            android:id="@+id/tvAddress"
-            style="@style/IconText"
-            android:layout_alignTop="@+id/icon_venue"
-            android:ellipsize="end"
-            android:ems="12"
-            android:maxLines="3"
-            android:scrollHorizontally="true"
-            android:singleLine="false"
-            android:text="ISKCON NVCC, Kondhawa, Pune, India survey no. 50, Opposite Shatrunjay Mandir, Katraj Kondhawa Rd," />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="6dp"
+            android:layout_toStartOf="@+id/tvDistribute"
             android:ellipsize="end"
             android:text="@string/food_count"
-            android:textColor="#d50000" />
-
-
-        <CheckBox
-            android:id="@+id/checkBox3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="Distribute"
-            android:textColor="#C6E4FB"
-            android:visibility="gone" />
+            android:textColor="#d50000"/>
 
         <TextView
             android:id="@+id/tvDistribute"
@@ -100,26 +106,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_margin="6dp"
+            android:drawableEnd="@drawable/dropping_hand_grey"
             android:drawablePadding="3dp"
-            android:drawableRight="@drawable/dropping_hand_grey"
-            android:text="Distribute Food"
-            android:textColor="#a4ca19"
-            android:textSize="14sp" />
-
-
-        <Button
-            android:id="@+id/bGetDirections"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="50dp"
-            android:background="#ff6f00"
-            android:text="Get directions"
-            android:textSize="10sp" />
+            android:text="@string/distribute_food"
+            android:textColor="#64dd17"
+            android:textSize="14sp"/>
 
 
     </RelativeLayout>

@@ -20,16 +20,14 @@ import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.utils.Utils;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders.PostViewHolder;
 
-/**
- * Created by Ashwin on 29-Mar-16.
- */
 public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewHolder> {
 
-    Context context;
+    private Context mContext;
 
-    public RecyclerViewPostAdapter(Context context, Class<Post> modelClass, int modelLayout, Class<PostViewHolder> viewHolderClass, Query ref) {
+    public RecyclerViewPostAdapter(Context context, Class<Post> modelClass, int modelLayout, Class<PostViewHolder>
+            viewHolderClass, Query ref) {
         super(modelClass, modelLayout, viewHolderClass, ref);
-        this.context = context;
+        this.mContext = context;
     }
 
     @Override
@@ -38,96 +36,104 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
         postViewHolder.tvProviderName.setText(post.getProviderName());
         postViewHolder.tvProviderContact.setText(post.getProviderContact());
         postViewHolder.tvProviderAddress.setText(post.getProviderAddress());
-        postViewHolder.tvCount.setText(String.format(context.getResources().getString(R.string.food_count), post.getPeopleCount()));
+        postViewHolder.tvCount
+                .setText(String.format(mContext.getString(R.string.food_count), post.getPeopleCount()));
 
         //convert time to relative time
-        String relativeTime = String.valueOf(DateUtils.getRelativeTimeSpanString(Long.parseLong(post.getTimestampCreated().toString())));
+        String relativeTime = String
+                .valueOf(DateUtils.getRelativeTimeSpanString(Long.parseLong(post.getTimestampCreated().toString())));
 
         postViewHolder.tvTimestamp.setText(relativeTime);
 
         boolean isDistributed = post.isRequestAccepted();
 
         if (isDistributed) {
-            postViewHolder.tvDistribute.setText("Distributed");
-            postViewHolder.tvDistribute.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_green, 0);
+            postViewHolder.tvDistribute.setText(R.string.distributed);
+            postViewHolder.tvDistribute
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_green, 0);
+        } else {
+            postViewHolder.tvDistribute.setText(R.string.distribute_food);
+            postViewHolder.tvDistribute
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_grey, 0);
         }
 
     }
 
     @Override
-    public void onBindViewHolder(final PostViewHolder viewHolder, final int position) {
-        super.onBindViewHolder(viewHolder, position);
+    public void onBindViewHolder(final PostViewHolder postViewHolder, int position) {
+        super.onBindViewHolder(postViewHolder, position);
 
-        viewHolder.bGetDirections.setOnClickListener(new View.OnClickListener() {
+        postViewHolder.bGetDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String address = getItem(position).getProviderAddress();
+                String address = getItem(postViewHolder.getAdapterPosition()).getProviderAddress();
 
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(mapIntent);
+                mContext.startActivity(mapIntent);
             }
         });
 
-        viewHolder.tvDistribute.setOnClickListener(new View.OnClickListener() {
+        boolean isDistributed = getItem(postViewHolder.getAdapterPosition()).isRequestAccepted();
+
+        if (isDistributed) {
+            postViewHolder.tvDistribute.setText(R.string.distributed);
+            postViewHolder.tvDistribute
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_green, 0);
+        } else {
+            postViewHolder.tvDistribute.setText(R.string.distribute_food);
+            postViewHolder.tvDistribute
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_grey, 0);
+        }
+
+        postViewHolder.tvDistribute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDistributedTrue(viewHolder, position);
-
-//                DialogFragment dialogFragment = DistributionConfirmationDialogFragment.newInstance();
-//                dialogFragment.show();
+                setDistributedTrue(postViewHolder, postViewHolder.getAdapterPosition());
             }
         });
 
 
     }
 
-    private void showDialog(final PostViewHolder viewHolder, final int position) {
-       /* AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Confirm").setMessage("Are you really ready to distribute?\nThis action cannot be reverted.").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setDistributedTrue(viewHolder, position);
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).show();*/
-    }
+    private void setDistributedTrue(PostViewHolder viewHolder, int position) {
 
-    protected void setDistributedTrue(PostViewHolder viewHolder, int position) {
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String distributor = sp.getString(Constants.USER_EMAIL, "user@example.com");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String distributor = sp.getString(Constants.USER_EMAIL, mContext.getString(R.string.string_default_email));
 
         Post post = getItem(position);
+        boolean isDistributed = getItem(position).isRequestAccepted();
 
-        post.setRequestAccepted(true);
-        post.setDistributor(distributor);
-        post.setTimestampRequestAccepted(ServerValue.TIMESTAMP);
+        if (!isDistributed) {
+            post.setRequestAccepted(true);
+            post.setDistributor(distributor);
+            post.setTimestampRequestAccepted(ServerValue.TIMESTAMP);
 
-        Firebase ref = getRef(position);
-        String key = ref.getKey();
-        String encodedEmail = Utils.encodeEmail(post.getProviderEmail());
+            Firebase ref = getRef(position);
+            String key = ref.getKey();
+            String encodedEmail = Utils.encodeEmail(post.getProviderEmail());
 
-        Firebase userNewPostRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail).child(Constants.FIREBASE_LOCATION_USER_POSTS);
+            Firebase userNewPostRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
+                    .child(Constants.FIREBASE_LOCATION_USER_POSTS);
 
-        ref.setValue(post);
-        userNewPostRef.child(key).setValue(post);
+            ref.setValue(post);
+            userNewPostRef.child(key).setValue(post);
 
-        viewHolder.tvDistribute.setText("Distributed");
-        viewHolder.tvDistribute.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_green, 0);
+            viewHolder.tvDistribute.setText(R.string.distributed);
+            viewHolder.tvDistribute.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_green, 0);
 
-        Snackbar.make(viewHolder.tvDistribute, "Please go to provider to collect the food and distribute it to poor hungry people near you.", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Thank You for your contribution towards better India...:)", Toast.LENGTH_LONG).show();
-            }
-        }).show();
-        //Toast.makeText(context, "Please go to provider, collect and distribute food. Thank you...", Toast.LENGTH_LONG).show();
+            Snackbar.make(viewHolder.tvDistribute, R.string.string_go_to_provider, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.string_ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(mContext, R.string.string_thank_you, Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+        }
+        else {
+            Snackbar.make(viewHolder.tvDistribute, R.string.string_already_distributed, Snackbar.LENGTH_SHORT).show();
+        }
     }
 }

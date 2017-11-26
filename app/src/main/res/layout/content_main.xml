@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,7 +14,6 @@
         android:id="@+id/linear_layout_NewRequest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="#CD0E3E"
@@ -25,9 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:padding="5dp"
-            android:text="Do you have ample amount of fresh food?"
+            android:text="@string/question_fresh_food"
             android:textColor="#ffffff"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
 
         <Button
@@ -37,8 +37,8 @@
             android:layout_marginTop="10dp"
             android:background="#f57f17"
             android:onClick="onDonatePressed"
-            android:text="Donate"
-            android:textSize="13sp" />
+            android:text="@string/donate"
+            android:textSize="13sp"/>
     </LinearLayout>
 
 
@@ -47,154 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linear_layout_NewRequest"
-        android:background="#FFFFFF" />
-
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="   Hotel Panchmi"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView5"
-            android:text="      Near Ciry Pride"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/textView14"
-            android:layout_alignRight="@+id/textView14"
-            android:layout_below="@+id/textView5"
-            android:layout_marginTop="18dp"
-            android:text="    Satara Road, Pune"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/textView6"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="5 min ago"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/textView10"
-            android:layout_alignRight="@+id/textView10"
-            android:layout_below="@+id/textView6"
-            android:text="Accept" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/checkBox"
-            android:text="Food Can Feed 5 people"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000441" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView11"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/horizontal_line" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView11"
-            android:layout_marginTop="44dp"
-            android:text="   Hotel Chintamani"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView12"
-            android:text="       Near Ras Madhuri"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView13"
-            android:text="       Upper, Bibwewadi"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/checkBox"
-            android:layout_alignRight="@+id/checkBox"
-            android:layout_alignTop="@+id/textView12"
-            android:text="10 min ago"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/textView15"
-            android:layout_alignRight="@+id/textView15"
-            android:layout_alignTop="@+id/textView14"
-            android:text="Accept" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView11"
-            android:layout_alignStart="@+id/textView11"
-            android:layout_below="@+id/checkBox2"
-            android:text="Food Can Feed 5 people"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#000441" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView16"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/horizontal_line" />
-    </RelativeLayout>
+        android:background="#FFFFFF"/>
 
 </RelativeLayout>

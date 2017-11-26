@@ -22,7 +22,10 @@
     <string name="positive_button_post">Post</string>
     <string name="max_people">*Max. 5 people at a time</string>
     <string name="error_max_people">Max. 5 people allowed</string>
-    <string name="food_count">Food For \"%s\" Life available</string>
+    <string name="food_count">Food for \"%s\" available</string>
+
+
+    <!--keys-->
     <string name="google_maps_key_debug">AIzaSyAnxqAK-yn9kqVXHdh6URM2xpiq2itvBCA</string>
     <string name="google_maps_key_release">AIzaSyD7_wmt9aYXijF1F3rRA8nahD2ZxJDMemw</string>
     <string name="error_ten_digits_number">10 digits long</string>
@@ -35,7 +38,7 @@
 
     <string name="helpText">"<b>A). Food Provider:</b>\n\n
 
-If you have a fresh food remained, from parties, marrige, anniversary or if you are social worker then we are happy to collect food from you.\n
+If you have a fresh food remained, from parties, marriage, anniversary or if you are social worker then we are happy to collect food from you.\n
 1.If you are already logged in then click on the \"DONATE\" button on home page of app.\n
 2.Enter the no. of people the food can be fed.\n
 3.That information will be send to food Distributors\n\n
@@ -45,4 +48,32 @@ If you have a fresh food remained, from parties, marrige, anniversary or if you 
 1.As soon as Food Distributor Logs in, he can see the list providing the details of food available for disitibution.\n
 2.In list, Food Distributor able to see the details from where to collect food and contact details of the food provider."
 </string>
+    <string name="distributed">Distributed</string>
+    <string name="question_fresh_food">Do you have ample amount of fresh food?</string>
+    <string name="donate">Donate</string>
+    <string name="icon_phone">phone icon</string>
+    <string name="timestamp">timestamp</string>
+    <string name="default_user_name">User Name</string>
+    <string name="default_contact_number">9876543210</string>
+    <string name="icon_address">address icon</string>
+    <string name="distribute_food">Distribute Food</string>
+    <string name="navigate">Navigate</string>
+    <string name="address">Address</string>
+    <string name="string_go_to_provider">Please go to provider to collect the food and distribute it to poor hungry people near you.</string>
+    <string name="string_thank_you">Thank You for your contribution towards better India…:)</string>
+    <string name="string_default_email">user@example.com</string>
+    <string name="string_ok">OK</string>
+    <string name="india_code">+91</string>
+    <string name="string_new_account_created">New account created</string>
+    <string name="string_network_error">Check your network</string>
+    <string name="string_error">Error</string>
+    <string name="string_confirm">Confirm</string>
+    <string name="string_no">No</string>
+    <string name="string_ready_to_distribute">Are you really ready to distribute? This action cannot be reverted.</string>
+    <string name="string_yes">Yes</string>
+    <string name="default_encoded_email">user@example,com</string>
+    <string name="default_address">City, India</string>
+    <string name="string_already_distributed">Food is already distributed</string>
+    <string name="appwidget_text">Donate Food</string>
+    <string name="add_widget">Add widget</string>
 </resources>

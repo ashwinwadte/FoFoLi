@@ -24,14 +24,22 @@ import com.waftinc.fofoli.model.User;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.utils.Utils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends Activity {
     /**
      * Data from the authenticated user
      */
     public static AuthData mAuthData;
 
-    EditText etEmail, etPassword;
+    @BindView(R.id.edit_text_email)
+    EditText etEmail;
+    @BindView(R.id.edit_text_password)
+    EditText etPassword;
+    @BindView(R.id.pbLogin)
     ProgressBar progressBar;
+    @BindView(R.id.linear_layout_login_activity)
     LinearLayout linearLayout;
 
     private Firebase mFirebaseRef;
@@ -40,20 +48,11 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-//        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.loginLayout);
-//        relativeLayout.setBackgroundResource(R.drawable.background_loginscreen);
+        ButterKnife.bind(this);
 
         mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
 
-        linearLayout = (LinearLayout) findViewById(R.id.linear_layout_login_activity);
-        etEmail = (EditText) findViewById(R.id.edit_text_email);
-        etPassword = (EditText) findViewById(R.id.edit_text_password);
-        progressBar = (ProgressBar) findViewById(R.id.pbLogin);
-
-        /**
-         * Listener for Firebase session changes
-         */
+        // Listener for Firebase session changes
         Firebase.AuthStateListener mAuthStateListener = new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
@@ -61,8 +60,8 @@ public class LoginActivity extends Activity {
             }
         };
 
-        /* Check if the user is authenticated with Firebase already. If this is the case we can set the authenticated
-         * user and hide any login buttons */
+        // Check if the user is authenticated with Firebase already.
+        // If this is the case we can set the authenticated user and hide any login buttons
         mFirebaseRef.addAuthStateListener(mAuthStateListener);
 
     }
@@ -149,12 +148,11 @@ public class LoginActivity extends Activity {
             @Override
             public void onAuthenticated(AuthData authData) {
 
-
-//                String userEmail = authData.getProviderData().get("email").toString();
                 final String uid = authData.getUid();
                 final String encodedEmail = Utils.encodeEmail(email);
 
-                Firebase userInfoRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail).child(Constants.FIREBASE_LOCATION_USER_INFO);
+                Firebase userInfoRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
+                        .child(Constants.FIREBASE_LOCATION_USER_INFO);
 
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                 final SharedPreferences.Editor spe = sp.edit();
@@ -201,7 +199,7 @@ public class LoginActivity extends Activity {
                     etPassword.setError(getString(R.string.error_invalid_password));
                 } else {
                     etPassword.requestFocus();
-                    showErrorDialog("Network problem!\nPlease try again!");
+                    showErrorDialog(getString(R.string.string_network_error));
                 }
 
             }
@@ -213,7 +211,7 @@ public class LoginActivity extends Activity {
      */
     private void showErrorDialog(String message) {
         new AlertDialog.Builder(this)
-                .setTitle("Error")
+                .setTitle(getString(R.string.string_error))
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .setIcon(R.drawable.ic_error_outline_24px)

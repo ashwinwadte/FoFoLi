@@ -8,9 +8,6 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by Ashwin on 30-Mar-16.
- */
 public class TextDrawable extends Drawable {
     final String text;
     final Paint paint;

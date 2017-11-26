@@ -1,8 +1,5 @@
 package com.waftinc.fofoli.utils;
 
-/**
- * Created by Ashwin on 27-Mar-16.
- */
 public class Constants {
 
     /**
@@ -33,4 +30,6 @@ public class Constants {
     public static final String USER_EMAIL = "userEmail";
     public static final String ENCODED_EMAIL = "encodedEmail";
     public static final String UID = "uid";
+    public static final String FIREBASE_QUERY_TIMESTAMP = "timestampCreatedInverse";
+    public static final String FIREBASE_QUERY_REQUEST_ACCEPTED = "requestAccepted";
 }

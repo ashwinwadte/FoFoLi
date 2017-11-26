@@ -4,22 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by Ashwin on 27-Mar-16.
- */
 public class Utils {
 
     //Date format for Image file name
-    public static final String SIMPLE_DATE_FORMAT = "yyyyMMdd_HHmmss";
-    public static final String SIMPLE_DATE_FORMAT1 = "yyyyMMddHHmmss";
+    public static final String SIMPLE_DATE_FORMAT = "yyyyMMddHHmmss";
 
     //TODO: remove unnecessary thing
     public static String getSubjectID(String encodedEmail) {
-        String timeStamp = new SimpleDateFormat(Utils.SIMPLE_DATE_FORMAT1, Locale.US).format(new Date());
+        String timeStamp = new SimpleDateFormat(Utils.SIMPLE_DATE_FORMAT, Locale.US).format(new Date());
 
-        String imageName = encodedEmail + timeStamp;
-
-        return imageName;
+        return encodedEmail + timeStamp;
     }
 
     /**

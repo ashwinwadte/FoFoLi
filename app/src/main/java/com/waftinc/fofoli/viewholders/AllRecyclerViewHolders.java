@@ -7,25 +7,32 @@ import android.widget.TextView;
 
 import com.waftinc.fofoli.R;
 
-/**
- * Created by Ashwin on 29-Mar-16.
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AllRecyclerViewHolders {
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvProviderName, tvProviderContact, tvProviderAddress, tvTimestamp, tvCount, tvDistribute;
+
+        @BindView(R.id.tvProviderName)
+        public TextView tvProviderName;
+        @BindView(R.id.tvContact)
+        public TextView tvProviderContact;
+        @BindView(R.id.tvAddress)
+        public TextView tvProviderAddress;
+        @BindView(R.id.tvTimestamp)
+        public TextView tvTimestamp;
+        @BindView(R.id.tvCount)
+        public TextView tvCount;
+        @BindView(R.id.tvDistribute)
+        public TextView tvDistribute;
+        @BindView(R.id.bGetDirections)
         public Button bGetDirections;
 
 
         public PostViewHolder(View itemView) {
             super(itemView);
-            tvProviderName = (TextView) itemView.findViewById(R.id.tvProviderName);
-            tvProviderContact = (TextView) itemView.findViewById(R.id.tvContact);
-            tvProviderAddress = (TextView) itemView.findViewById(R.id.tvAddress);
-            tvTimestamp = (TextView) itemView.findViewById(R.id.tvTimestamp);
-            tvCount = (TextView) itemView.findViewById(R.id.tvCount);
-            tvDistribute = (TextView) itemView.findViewById(R.id.tvDistribute);
-            bGetDirections = (Button) itemView.findViewById(R.id.bGetDirections);
+            ButterKnife.bind(this, itemView);
         }
     }
 

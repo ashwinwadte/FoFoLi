@@ -27,4 +27,10 @@
     <dimen name="lists_row_height">70dp</dimen>
     <dimen name="empty_footer_height">80dp</dimen>
     <dimen name="logo_image_size">100dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>

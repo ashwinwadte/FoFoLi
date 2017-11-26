@@ -8,8 +8,6 @@ import android.os.Bundle;
  * status bar and navigation/system bar) with user interaction.
  */
 public class HelpActivity extends Activity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

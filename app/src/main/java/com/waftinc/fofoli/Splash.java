@@ -11,12 +11,12 @@ import com.waftinc.fofoli.authentication.LoginActivity;
 import com.waftinc.fofoli.utils.Constants;
 
 public class Splash extends Activity {
-    /**
-     * Data from the authenticated user
-     */
+
+    // Data from the authenticated user
     public static AuthData mAuthData;
 
     private Firebase mFirebaseRef;
+    public static final long DELAY_MILLIS = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class Splash extends Activity {
                     finish();
                 }
             }
-        }, 3000);
+        }, DELAY_MILLIS);
     }
 
     @Override

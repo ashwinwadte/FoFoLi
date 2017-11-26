@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 
-/**
- * Created by Ashwin on 30-Mar-16.
- */
+import com.waftinc.fofoli.R;
+
 public class DistributionConfirmationDialogFragment extends DialogFragment {
     EditText etCount;
 
@@ -35,17 +34,20 @@ public class DistributionConfirmationDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Confirm").setMessage("Are you really ready to distribute?\nThis action cannot be reverted.").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //setDistributedTrue(viewHolder, position);
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setTitle(R.string.string_confirm)
+                .setMessage(getActivity().getString(R.string.string_ready_to_distribute))
+                .setPositiveButton(getActivity().getString(R.string.string_yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //setDistributedTrue(viewHolder, position);
+                    }
+                })
+                .setNegativeButton(getActivity().getString(R.string.string_no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
         return builder.create();
     }

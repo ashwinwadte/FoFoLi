@@ -1,8 +1,5 @@
 package com.waftinc.fofoli.model;
 
-/**
- * Created by Ashwin on 27-Mar-16.
- */
 public class User {
     private String name;
     private String contact;
