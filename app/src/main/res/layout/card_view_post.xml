@@ -1,9 +1,13 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/card_width"
     android:layout_height="200dp"
-    android:layout_margin="4dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
     android:foreground="?android:attr/selectableItemBackground">
 
     <RelativeLayout
@@ -35,41 +39,48 @@
             android:textColor="#C6E4FB"
             android:textSize="12sp"/>
 
-        <ImageButton
-            android:id="@+id/icon_phone"
-            style="@style/Icon"
-            android:layout_below="@+id/tvProviderName"
-            android:background="@drawable/ic_phone_24dp"
-            android:contentDescription="@string/icon_phone"/>
 
-        <TextView
-            android:id="@+id/tvContact"
-            style="@style/IconText"
-            android:layout_alignTop="@+id/icon_phone"
-            android:autoLink="phone"
-            android:linksClickable="true"
-            android:text="@string/default_contact_number"/>
+        <LinearLayout
+            android:id="@+id/contact_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProviderName"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/icon_phone"
+                style="@style/Icon"
+                android:background="@drawable/ic_phone_24dp"
+                android:contentDescription="@string/icon_phone"/>
+
+            <TextView
+                android:id="@+id/tvContact"
+                style="@style/IconText"
+                android:autoLink="phone"
+                android:linksClickable="true"
+                android:text="@string/default_contact_number"/>
+        </LinearLayout>
 
 
         <LinearLayout
             android:id="@+id/address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvContact"
+            android:layout_below="@+id/contact_layout"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/icon_venue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Icon"
                 android:background="@drawable/ic_location_on_24dp"
                 android:contentDescription="@string/icon_address"/>
 
             <TextView
                 android:id="@+id/tvAddress"
                 style="@style/IconText"
-                android:layout_marginStart="10dp"
                 android:ellipsize="end"
                 android:ems="14"
                 android:maxLines="3"

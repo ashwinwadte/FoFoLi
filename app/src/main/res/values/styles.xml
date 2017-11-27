@@ -32,7 +32,7 @@
 
     <style name="LoginCreateText">
         <item name="android:textSize">@dimen/login_buttons_text_size</item>
-        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_margin">2dp</item>
     </style>
 
@@ -43,7 +43,7 @@
     <style name="LoginCreateTextButton">
         <item name="android:textSize">@dimen/login_buttons_text_size</item>
         <item name="android:textStyle">bold|italic</item>
-        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_margin">2dp</item>
         <item name="android:clickable">true</item>
     </style>

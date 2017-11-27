@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/input_field_height"
                 android:layout_marginBottom="@dimen/lv_header_text_size"
-                android:background="@color/primary"
+                android:background="@color/colorAccent"
                 android:contentDescription="@string/sign_in"
                 android:onClick="onSignInPressed"
                 android:text="@string/sign_in"
