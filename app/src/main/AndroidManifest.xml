@@ -24,13 +24,16 @@
 
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".authentication.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_login"/>
         <activity
             android:name=".authentication.CreateAccountActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_create_account"/>
         <activity
             android:name=".Splash"
