@@ -2,8 +2,10 @@ package com.waftinc.fofoli.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -38,9 +40,8 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
     }
 
     private void populatePostList() {
-        postList.clear();
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
             Query postRefQuery = FirebaseDatabase.getInstance().getReference()
@@ -51,11 +52,14 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
             postRefQuery.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    postList.clear();
+
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Post post = postSnapshot.getValue(Post.class);
 
                         postList.add(post);
                     }
+                    mCountDownLatch.countDown();
                 }
 
                 @Override
@@ -68,6 +72,7 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
             Log.i(TAG, "user is null");
         }
         mCountDownLatch.countDown();
+
     }
 
     @Override
@@ -112,9 +117,19 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
     */
     @Override
     public RemoteViews getViewAt(int position) {
-        final RemoteViews remoteView = new RemoteViews(mContext.getPackageName(), R.layout.list_row_post);
 
-        Post post = postList.get(position);
+        RemoteViews remoteView = new RemoteViews(mContext.getPackageName(), R.layout.list_row_post);
+
+        // just returning the view, without doing any operations
+        if (position == AdapterView.INVALID_POSITION || postList.isEmpty()) return remoteView;
+
+        Post post = null;
+        try {
+            post = postList.get(position);
+        } catch (IndexOutOfBoundsException e) {
+            Log.e(TAG, "postList invalid position: " + e);
+            return remoteView;
+        }
 
         remoteView.setTextViewText(R.id.tvCount, String
                 .format(mContext.getString(R.string.food_count), post.getPeopleCount()));
@@ -131,7 +146,7 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
         }
 
 
-        //fillIn intent for navigate button
+        //fillInIntent for navigate button
         final String address = post.getProviderAddress();
 
         Bundle extras = new Bundle();
@@ -146,8 +161,7 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
 
     @Override
     public RemoteViews getLoadingView() {
-        return null;
-        //return new RemoteViews(mContext.getPackageName(), R.layout.list_row_post);
+        return new RemoteViews(mContext.getPackageName(), R.layout.list_row_post);
     }
 
     @Override
