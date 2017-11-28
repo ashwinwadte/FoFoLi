@@ -131,8 +131,7 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
                             Toast.makeText(mContext, R.string.string_thank_you, Toast.LENGTH_SHORT).show();
                         }
                     }).show();
-        }
-        else {
+        } else {
             Snackbar.make(viewHolder.tvDistribute, R.string.string_already_distributed, Snackbar.LENGTH_SHORT).show();
         }
     }

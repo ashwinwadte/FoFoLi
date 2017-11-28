@@ -1,6 +1,5 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
     android:layout_width="@dimen/card_width"
     android:layout_height="200dp"
     android:layout_gravity="center_horizontal"
@@ -50,7 +49,6 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/icon_phone"
                 style="@style/Icon"
                 android:background="@drawable/ic_phone_24dp"
                 android:contentDescription="@string/icon_phone"/>
@@ -65,7 +63,6 @@
 
 
         <LinearLayout
-            android:id="@+id/address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/contact_layout"
@@ -73,7 +70,6 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/icon_venue"
                 style="@style/Icon"
                 android:background="@drawable/ic_location_on_24dp"
                 android:contentDescription="@string/icon_address"/>
