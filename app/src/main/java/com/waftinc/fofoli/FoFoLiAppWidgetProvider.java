@@ -31,8 +31,7 @@ public class FoFoLiAppWidgetProvider extends AppWidgetProvider {
 
         // Create an Intent to launch MainActivity when donate button clicked
         Intent donateIntent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.SHOW_DONATE_DIALOG, true);
-        //intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        donateIntent.putExtra(MainActivity.SHOW_DONATE_DIALOG, true);
         PendingIntent donatePendingIntent = PendingIntent
                 .getActivity(context, 0, donateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.bDonate, donatePendingIntent);
