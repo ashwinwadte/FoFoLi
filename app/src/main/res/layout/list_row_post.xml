@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:text="@string/food_count"
+        android:textColor="#d50000"/>
+
+    <TextView
+        android:id="@+id/tvDistribute"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:drawableEnd="@drawable/dropping_hand_grey"
+        android:drawablePadding="3dp"
+        android:text="@string/distribute_food"
+        android:textColor="#64dd17"
+        android:textSize="14sp"/>
+
+    <Button
+        android:id="@+id/bGetDirections"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="#ff6f00"
+        android:text="@string/navigate"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        android:visibility="visible"/>
+
+</LinearLayout>

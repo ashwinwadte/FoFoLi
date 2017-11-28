@@ -1,27 +1,54 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/appwidget_dark_bg_clickable"
+    android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/appwidget_logo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linear_layout_NewRequest"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/appwidget_dark_bg_clickable"
-        android:contentDescription="@string/appwidget_text"
-        android:src="@mipmap/ic_launcher"/>
+        android:background="#CD0E3E"
+        android:gravity="end"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/bDonate"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#f57f17"
+            android:text="@string/donate"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- ListView to be shown on widget -->
+    <ListView
+        android:id="@+id/widget_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!-- Empty view is show if list items are empty -->
     <TextView
-        android:id="@+id/appwidget_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/appwidget_logo"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/empty_string"
         android:textColor="#ffffff"
-        android:textSize="12sp"/>
+        android:textSize="20sp"
+        android:visibility="gone"/>
 
-</RelativeLayout>
+</LinearLayout>

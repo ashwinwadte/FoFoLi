@@ -25,13 +25,13 @@ import com.waftinc.fofoli.utils.Utils;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders.PostViewHolder;
 
 public class RecyclerPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewHolder> {
-    Context mContext;
+    private Context mContext;
 
     /**
      * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
      * {@link FirebaseRecyclerOptions} for configuration options.
      *
-     * @param options
+     * @param options firebaseRecyclerOptions
      */
     public RecyclerPostAdapter(Context context, FirebaseRecyclerOptions<Post> options) {
         super(options);
@@ -72,6 +72,13 @@ public class RecyclerPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewH
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_grey, 0);
         }
 
+        // click listener for tvDistribute
+        postViewHolder.tvDistribute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDistributedTrue(postViewHolder, postViewHolder.getAdapterPosition());
+            }
+        });
 
         // click listener for navigate button
         postViewHolder.bGetDirections.setOnClickListener(new View.OnClickListener() {
@@ -87,13 +94,6 @@ public class RecyclerPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewH
             }
         });
 
-
-        postViewHolder.tvDistribute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDistributedTrue(postViewHolder, postViewHolder.getAdapterPosition());
-            }
-        });
 
     }
 

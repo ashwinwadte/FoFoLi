@@ -92,4 +92,5 @@ If you have a fresh food remained, from parties, marriage, anniversary or if you
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="logout">Logout</string>
+    <string name="empty_string">No Data</string>
 </resources>

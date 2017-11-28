@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity
         mFirebaseRootRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
+        // TODO: find why intent is not getting the boolean
+        mShowDonateDialog = this.getIntent().getBooleanExtra(SHOW_DONATE_DIALOG, false);
+
         initRecyclerView();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -74,9 +77,6 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
 
         initWidgets(mNavigationView.getHeaderView(0));
-
-
-        mShowDonateDialog = getIntent().getBooleanExtra(SHOW_DONATE_DIALOG, false);
     }
 
     @Override
@@ -85,10 +85,10 @@ public class MainActivity extends AppCompatActivity
 
         if (mAuth.getCurrentUser() != null) {
             rvPostAdapter.startListening();
-
-            if (mShowDonateDialog)
-                ShowDonateDialog();
         }
+
+        if (mShowDonateDialog)
+            ShowDonateDialog();
     }
 
     @Override
@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initWidgets(View headerView) {
-        tvUserName = (TextView) headerView.findViewById(R.id.navbar_user_name);
-        tvUserEmail = (TextView) headerView.findViewById(R.id.navbar_user_email);
+        tvUserName = headerView.findViewById(R.id.navbar_user_name);
+        tvUserEmail = headerView.findViewById(R.id.navbar_user_email);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 

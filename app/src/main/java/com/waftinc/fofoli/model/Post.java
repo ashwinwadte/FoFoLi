@@ -1,7 +1,6 @@
 package com.waftinc.fofoli.model;
 
 import com.google.firebase.database.Exclude;
-import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.utils.Constants;
 
 import java.util.Date;
@@ -89,7 +88,7 @@ public class Post {
     }
 
     @Exclude
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
         // TODO: update in future
         HashMap<String, Object> result = new HashMap<>();
 //        result.put("providerName", providerName);
