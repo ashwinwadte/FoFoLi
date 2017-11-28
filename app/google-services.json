@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "81676884388",
+    "firebase_url": "https://fofoli.firebaseio.com",
+    "project_id": "project-1032592367772830806",
+    "storage_bucket": "project-1032592367772830806.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81676884388:android:36c868d0ec582fa1",
+        "android_client_info": {
+          "package_name": "com.waftinc.fofoli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81676884388-h7eic2c50bn760fffvnv1h16fi4i8mhc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.waftinc.fofoli",
+            "certificate_hash": "4fb3d85881be47722f02178ad3c2618e55715779"
+          }
+        },
+        {
+          "client_id": "81676884388-g09ck2ahiea5tuld7a9hu77edd2103se.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBkA48ZUwQtYhtWvU4TWrjw13SwC1fNCw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,9 @@
 package com.waftinc.fofoli.utils;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.Query;
+import com.waftinc.fofoli.model.Post;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -31,6 +35,9 @@ public class Utils {
         return userEmail.replace(",", ".");
     }
 
-
-
+    public static FirebaseRecyclerOptions<Post> getFirebaseRecyclerOptions(Query query) {
+        return new FirebaseRecyclerOptions.Builder<Post>()
+                .setQuery(query, Post.class)
+                .build();
+    }
 }

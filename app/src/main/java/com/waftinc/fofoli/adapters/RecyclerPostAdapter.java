@@ -6,32 +6,47 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.Query;
-import com.firebase.client.ServerValue;
-import com.firebase.ui.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.utils.Utils;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders.PostViewHolder;
 
-public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewHolder> {
+public class RecyclerPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewHolder> {
+    Context mContext;
 
-    private Context mContext;
-
-    public RecyclerViewPostAdapter(Context context, Class<Post> modelClass, int modelLayout, Class<PostViewHolder>
-            viewHolderClass, Query ref) {
-        super(modelClass, modelLayout, viewHolderClass, ref);
-        this.mContext = context;
+    /**
+     * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
+     * {@link FirebaseRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+    public RecyclerPostAdapter(Context context, FirebaseRecyclerOptions<Post> options) {
+        super(options);
+        mContext = context;
     }
 
     @Override
-    protected void populateViewHolder(PostViewHolder postViewHolder, Post post, int position) {
+    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_post, parent, false);
+
+        return new PostViewHolder(view);
+    }
+
+    @Override
+    protected void onBindViewHolder(final PostViewHolder postViewHolder, int position, Post post) {
 
         postViewHolder.tvProviderName.setText(post.getProviderName());
         postViewHolder.tvProviderContact.setText(post.getProviderContact());
@@ -57,12 +72,8 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_grey, 0);
         }
 
-    }
 
-    @Override
-    public void onBindViewHolder(final PostViewHolder postViewHolder, int position) {
-        super.onBindViewHolder(postViewHolder, position);
-
+        // click listener for navigate button
         postViewHolder.bGetDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,17 +87,6 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
             }
         });
 
-        boolean isDistributed = getItem(postViewHolder.getAdapterPosition()).isRequestAccepted();
-
-        if (isDistributed) {
-            postViewHolder.tvDistribute.setText(R.string.distributed);
-            postViewHolder.tvDistribute
-                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_green, 0);
-        } else {
-            postViewHolder.tvDistribute.setText(R.string.distribute_food);
-            postViewHolder.tvDistribute
-                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.dropping_hand_grey, 0);
-        }
 
         postViewHolder.tvDistribute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +94,6 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
                 setDistributedTrue(postViewHolder, postViewHolder.getAdapterPosition());
             }
         });
-
 
     }
 
@@ -111,11 +110,13 @@ public class RecyclerViewPostAdapter extends FirebaseRecyclerAdapter<Post, PostV
             post.setDistributor(distributor);
             post.setTimestampRequestAccepted(ServerValue.TIMESTAMP);
 
-            Firebase ref = getRef(position);
+            DatabaseReference ref = getRef(position);
+
             String key = ref.getKey();
             String encodedEmail = Utils.encodeEmail(post.getProviderEmail());
 
-            Firebase userNewPostRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
+            DatabaseReference userNewPostRef = FirebaseDatabase.getInstance().getReference()
+                    .child(Constants.FIREBASE_LOCATION_USERS).child(encodedEmail)
                     .child(Constants.FIREBASE_LOCATION_USER_POSTS);
 
             ref.setValue(post);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,11 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ServerValue;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -29,15 +25,21 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.User;
 import com.waftinc.fofoli.utils.Constants;
 import com.waftinc.fofoli.utils.TextDrawable;
 import com.waftinc.fofoli.utils.Utils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +50,10 @@ public class CreateAccountActivity extends Activity {
     /**
      * Data from the authenticated user
      */
-    public static AuthData mAuthData;
+    public static FirebaseAuth mAuth;
+
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
     @BindView(R.id.edit_text_username_create)
     EditText etName;
     @BindView(R.id.edit_text_mobile_create)
@@ -67,7 +71,7 @@ public class CreateAccountActivity extends Activity {
     @BindView(R.id.linear_layout_create_account_activity)
     LinearLayout linearLayout;
 
-    private Firebase mFirebaseRef;
+    private DatabaseReference mFirebaseRootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,28 +79,36 @@ public class CreateAccountActivity extends Activity {
         setContentView(R.layout.activity_create_account);
         ButterKnife.bind(this);
 
-        mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
+        mAuth = FirebaseAuth.getInstance();
+
+        mFirebaseRootRef = FirebaseDatabase.getInstance().getReference();
 
         String mCountryCode = Constants.INDIA_CODE;
 
         int dpPad = (int) (12 * getResources().getDisplayMetrics().scaledDensity);
 
-        etContact
-                .setCompoundDrawablesWithIntrinsicBounds(new TextDrawable(mCountryCode, CreateAccountActivity.this),
-                        null, null, null);
+        etContact.setCompoundDrawablesWithIntrinsicBounds(new TextDrawable(mCountryCode, CreateAccountActivity.this),
+                null, null, null);
         etContact.setCompoundDrawablePadding(mCountryCode.length() * dpPad);
 
         // Listener for Firebase session changes
-        Firebase.AuthStateListener mAuthStateListener = new Firebase.AuthStateListener() {
+        FirebaseAuth.AuthStateListener mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(AuthData authData) {
-                mAuthData = authData;
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                mAuth = firebaseAuth;
+
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.i(TAG, "AuthStateChanged: User is signed in with uid: " + user.getUid());
+                } else {
+                    Log.i(TAG, "AuthStateChanged: No user is signed in.");
+                }
             }
         };
 
         // Check if the user is authenticated with Firebase already.
         // If this is the case we can set the authenticated user and hide any login buttons.
-        mFirebaseRef.addAuthStateListener(mAuthStateListener);
+        mAuth.addAuthStateListener(mAuthStateListener);
 
     }
 
@@ -191,86 +203,88 @@ public class CreateAccountActivity extends Activity {
 
             final User newUser = new User(mName, mContact, mAddress, ServerValue.TIMESTAMP);
 
-            mFirebaseRef.createUser(mEmail, mNewPassword, new Firebase.ValueResultHandler<Map<String, Object>>() {
-                @Override
-                public void onSuccess(Map<String, Object> result) {
-                    Toast.makeText(getApplicationContext(), R.string.string_new_account_created, Toast.LENGTH_SHORT)
-                            .show();
-                    addUserToFirebase(newUser, mEmail);
-                    loginWithPassword(mEmail, mNewPassword, newUser);
-                }
+            mAuth.createUserWithEmailAndPassword(mEmail, mNewPassword)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
-                @Override
-                public void onError(FirebaseError firebaseError) {
-                    progressBar.setVisibility(View.GONE);
-                    linearLayout.setVisibility(View.VISIBLE);
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign up successful
+                                Toast.makeText(getApplicationContext(), R.string.string_new_account_created, Toast
+                                        .LENGTH_SHORT)
+                                        .show();
 
-                    if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
-                        etEmail.requestFocus();
-                        etEmail.setError(getString(R.string.error_email_taken));
-                    } else {
-                        etConfirmPassword.requestFocus();
-                        showErrorDialog(getString(R.string.string_network_error));
-                    }
-                }
-            });
+                                addUserToFirebase(newUser, mEmail);
+                                loginWithPassword(mEmail, mNewPassword, newUser);
+                            } else {
+                                // Sign up failed
+                                progressBar.setVisibility(View.GONE);
+                                linearLayout.setVisibility(View.VISIBLE);
+
+                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                    etEmail.requestFocus();
+                                    etEmail.setError(getString(R.string.error_email_taken));
+                                } else {
+                                    etConfirmPassword.requestFocus();
+                                    showErrorDialog(getString(R.string.string_network_error));
+                                }
+                            }
+                        }
+                    });
         }
     }
 
     private void loginWithPassword(final String email, final String password, final User newUser) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            final FirebaseUser user = task.getResult().getUser();
 
-        mFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+                            String uid = user.getUid();
 
-            @Override
-            public void onAuthenticated(AuthData authData) {
+                            SharedPreferences sp = PreferenceManager
+                                    .getDefaultSharedPreferences(CreateAccountActivity.this);
+                            SharedPreferences.Editor spe = sp.edit();
 
-                String uid = authData.getUid();
-
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(CreateAccountActivity.this);
-                SharedPreferences.Editor spe = sp.edit();
-
-                spe.putString(Constants.USER_NAME, newUser.getName());
-                spe.putString(Constants.USER_CONTACT, newUser.getContact());
-                spe.putString(Constants.USER_ADDRESS, newUser.getAddress());
+                            spe.putString(Constants.USER_NAME, newUser.getName());
+                            spe.putString(Constants.USER_CONTACT, newUser.getContact());
+                            spe.putString(Constants.USER_ADDRESS, newUser.getAddress());
 
 
-                spe.putString(Constants.USER_EMAIL, email);
-                spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(email));
-                spe.putString(Constants.UID, uid);
-                spe.apply();
+                            spe.putString(Constants.USER_EMAIL, email);
+                            spe.putString(Constants.ENCODED_EMAIL, Utils.encodeEmail(email));
+                            spe.putString(Constants.UID, uid);
+                            spe.apply();
 
-                //start new activity
-                Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
+                            //start new activity
+                            Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
+                            showErrorDialog(getString(R.string.string_network_error));
 
-                progressBar.setVisibility(View.GONE);
-                linearLayout.setVisibility(View.VISIBLE);
+                            //go to login activity
+                            Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
 
-                showErrorDialog(getString(R.string.string_network_error));
-
-                //go to login activity
-                Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-
-            }
-        });
+                    }
+                });
     }
 
     private void addUserToFirebase(User user, String mEmail) {
         String encodedEmail = Utils.encodeEmail(mEmail);
 
-        Firebase userInfo = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
+        DatabaseReference userInfo = mFirebaseRootRef.child(Constants.FIREBASE_LOCATION_USERS).child(encodedEmail)
                 .child(Constants.FIREBASE_LOCATION_USER_INFO);
 
-        HashMap<String, Object> newUserMap = (HashMap<String, Object>) new ObjectMapper().convertValue(user, Map.class);
-
-        userInfo.updateChildren(newUserMap);
+        userInfo.setValue(user);
     }
 
     private boolean isEmailValid(String email) {

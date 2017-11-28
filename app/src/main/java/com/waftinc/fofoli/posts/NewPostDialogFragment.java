@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.ServerValue;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
@@ -149,8 +149,12 @@ public class NewPostDialogFragment extends DialogFragment {
             String encodedEmail = sp.getString(Constants.ENCODED_EMAIL, getString(R.string.default_encoded_email));
 
             // Create Firebase references
-            Firebase newPostRef = new Firebase(Constants.FIREBASE_URL_POSTS);
-            Firebase userNewPostRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
+            DatabaseReference newPostRef = FirebaseDatabase.getInstance().getReference()
+                    .child(Constants.FIREBASE_LOCATION_POSTS);
+
+            DatabaseReference userNewPostRef = FirebaseDatabase.getInstance().getReference()
+                    .child(Constants.FIREBASE_LOCATION_USERS)
+                    .child(encodedEmail)
                     .child(Constants.FIREBASE_LOCATION_USER_POSTS);
 
 
@@ -161,7 +165,7 @@ public class NewPostDialogFragment extends DialogFragment {
             //HashMap<String, Object> newPostMap = (HashMap<String, Object>) new ObjectMapper().convertValue(newPost,
             // Map.class);
 
-            Firebase newPostRefId = newPostRef.push();
+            DatabaseReference newPostRefId = newPostRef.push();
             final String postId = newPostRefId.getKey();
 
             newPostRefId.setValue(newPost);

@@ -5,18 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.waftinc.fofoli.authentication.LoginActivity;
-import com.waftinc.fofoli.utils.Constants;
 
 public class Splash extends Activity {
 
-    // Data from the authenticated user
-    public static AuthData mAuthData;
-
-    private Firebase mFirebaseRef;
     public static final long DELAY_MILLIS = 3000;
+
+    // Data from the authenticated user
+    private static FirebaseUser mCurrentUser;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +23,15 @@ public class Splash extends Activity {
 
         setContentView(R.layout.activity_splash);
 
-        mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
+
+        mAuth = FirebaseAuth.getInstance();
 
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                if (mAuthData != null) {
+                if (mCurrentUser != null) {
                     Intent intent = new Intent(Splash.this, MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -48,6 +48,7 @@ public class Splash extends Activity {
     protected void onStart() {
         super.onStart();
 
-        mAuthData = mFirebaseRef.getAuth();
+        // check if user is signed in
+        mCurrentUser = mAuth.getCurrentUser();
     }
 }

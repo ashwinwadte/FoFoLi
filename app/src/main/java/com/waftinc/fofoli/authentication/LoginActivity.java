@@ -5,19 +5,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.User;
@@ -28,10 +37,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends Activity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
     /**
      * Data from the authenticated user
      */
-    public static AuthData mAuthData;
+    public static FirebaseAuth mAuth;
 
     @BindView(R.id.edit_text_email)
     EditText etEmail;
@@ -42,7 +52,7 @@ public class LoginActivity extends Activity {
     @BindView(R.id.linear_layout_login_activity)
     LinearLayout linearLayout;
 
-    private Firebase mFirebaseRef;
+    private DatabaseReference mFirebaseRootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +60,27 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseRootRef = FirebaseDatabase.getInstance().getReference();
 
         // Listener for Firebase session changes
-        Firebase.AuthStateListener mAuthStateListener = new Firebase.AuthStateListener() {
+        FirebaseAuth.AuthStateListener mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(AuthData authData) {
-                mAuthData = authData;
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                mAuth = firebaseAuth;
+
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Log.i(TAG, "AuthStateChanged: User is signed in with uid: " + user.getUid());
+                } else {
+                    Log.i(TAG, "AuthStateChanged: No user is signed in.");
+                }
             }
         };
 
         // Check if the user is authenticated with Firebase already.
         // If this is the case we can set the authenticated user and hide any login buttons
-        mFirebaseRef.addAuthStateListener(mAuthStateListener);
+        mAuth.addAuthStateListener(mAuthStateListener);
 
     }
 
@@ -143,67 +161,74 @@ public class LoginActivity extends Activity {
 
     public void loginWithPassword(final String email, final String password) {
 
-        mFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
-
-            @Override
-            public void onAuthenticated(AuthData authData) {
-
-                final String uid = authData.getUid();
-                final String encodedEmail = Utils.encodeEmail(email);
-
-                Firebase userInfoRef = new Firebase(Constants.FIREBASE_URL_USERS).child(encodedEmail)
-                        .child(Constants.FIREBASE_LOCATION_USER_INFO);
-
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                final SharedPreferences.Editor spe = sp.edit();
-
-                userInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user != null) {
-                            spe.putString(Constants.USER_NAME, user.getName());
-                            spe.putString(Constants.USER_CONTACT, user.getContact());
-                            spe.putString(Constants.USER_ADDRESS, user.getAddress());
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            final FirebaseUser user = task.getResult().getUser();
 
+                            final String uid = user.getUid();
+                            final String encodedEmail = Utils.encodeEmail(email);
+
+                            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                            final SharedPreferences.Editor spe = sp.edit();
+
+                            DatabaseReference userInfoRef = mFirebaseRootRef.child(Constants.FIREBASE_LOCATION_USERS)
+                                    .child(encodedEmail)
+                                    .child(Constants.FIREBASE_LOCATION_USER_INFO);
+
+                            userInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    try {
+                                        User user = dataSnapshot.getValue(User.class);
+                                        if (user != null) {
+                                            spe.putString(Constants.USER_NAME, user.getName());
+                                            spe.putString(Constants.USER_CONTACT, user.getContact());
+                                            spe.putString(Constants.USER_ADDRESS, user.getAddress());
+
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(TAG, "error in parsing User: " + e);
+                                    }
+                                    spe.putString(Constants.USER_EMAIL, email);
+                                    spe.putString(Constants.ENCODED_EMAIL, encodedEmail);
+                                    spe.putString(Constants.UID, uid);
+                                    spe.apply();
+
+                                    //start new activity
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Log.i(TAG, "user write error: " + databaseError.getMessage());
+                                }
+                            });
+
+
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.VISIBLE);
+
+                            Exception e = task.getException();
+
+                            if (e instanceof FirebaseAuthInvalidUserException) {
+                                etEmail.requestFocus();
+                                etEmail.setError(getString(R.string.error_user_not_registered));
+                            } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                                etPassword.requestFocus();
+                                etPassword.setError(getString(R.string.error_invalid_password));
+                            } else {
+                                etPassword.requestFocus();
+                                showErrorDialog(getString(R.string.string_network_error));
+                            }
                         }
-                        spe.putString(Constants.USER_EMAIL, email);
-                        spe.putString(Constants.ENCODED_EMAIL, encodedEmail);
-                        spe.putString(Constants.UID, uid);
-                        spe.apply();
-
-                        //start new activity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
                     }
                 });
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-
-                progressBar.setVisibility(View.GONE);
-                linearLayout.setVisibility(View.VISIBLE);
-
-                if (firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
-                    etEmail.requestFocus();
-                    etEmail.setError(getString(R.string.error_user_not_registered));
-                } else if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
-                    etPassword.requestFocus();
-                    etPassword.setError(getString(R.string.error_invalid_password));
-                } else {
-                    etPassword.requestFocus();
-                    showErrorDialog(getString(R.string.string_network_error));
-                }
-
-            }
-        });
     }
 
     /**

@@ -17,14 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.firebase.client.Firebase;
-import com.firebase.client.Query;
-import com.waftinc.fofoli.adapters.RecyclerViewPostAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.waftinc.fofoli.adapters.RecyclerPostAdapter;
 import com.waftinc.fofoli.authentication.LoginActivity;
-import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.posts.NewPostDialogFragment;
 import com.waftinc.fofoli.utils.Constants;
-import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders;
+import com.waftinc.fofoli.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,9 +45,10 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.recycler_view_all_posts)
     RecyclerView mRecyclerView_all_posts;
 
-    RecyclerViewPostAdapter rvPostAdapter;
+    RecyclerPostAdapter rvPostAdapter;
 
-    Firebase mFirebaseRef;
+    DatabaseReference mFirebaseRootRef;
+    FirebaseAuth mAuth;
 
     boolean mShowDonateDialog = false;
 
@@ -59,7 +61,8 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(mToolbar);
 
-        mFirebaseRef = new Firebase(Constants.FIREBASE_ROOT_URL);
+        mFirebaseRootRef = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
 
         initRecyclerView();
 
@@ -80,38 +83,33 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        mFirebaseRef.getAuth();
+        if (mAuth.getCurrentUser() != null) {
+            rvPostAdapter.startListening();
 
-        if (mShowDonateDialog)
-            ShowDonateDialog();
+            if (mShowDonateDialog)
+                ShowDonateDialog();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mShowDonateDialog = false;
+        rvPostAdapter.stopListening();
     }
 
     private void initRecyclerView() {
-        Firebase postRef = new Firebase(Constants.FIREBASE_URL_POSTS);
-        Query postRefQuery = postRef.orderByChild(Constants.FIREBASE_QUERY_TIMESTAMP);
+        Query postRefQuery = mFirebaseRootRef.child(Constants.FIREBASE_LOCATION_POSTS)
+                .orderByChild(Constants.FIREBASE_QUERY_TIMESTAMP);
         postRefQuery.keepSynced(true);
 
         mRecyclerView_all_posts.setHasFixedSize(true);
         mRecyclerView_all_posts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        rvPostAdapter = new RecyclerViewPostAdapter(this
-                .getApplicationContext(), Post.class, R.layout.card_view_post, AllRecyclerViewHolders.PostViewHolder
-                .class, postRefQuery);
+        rvPostAdapter = new RecyclerPostAdapter(this, Utils.getFirebaseRecyclerOptions(postRefQuery));
 
         mRecyclerView_all_posts.setAdapter(rvPostAdapter);
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        rvPostAdapter.cleanup();
     }
 
     private void initWidgets(View headerView) {
@@ -164,7 +162,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void logout() {
-        mFirebaseRef.unauth();
+        mAuth.signOut();
 
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

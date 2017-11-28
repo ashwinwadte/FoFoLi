@@ -1,5 +1,10 @@
 package com.waftinc.fofoli.model;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
     private String name;
     private String contact;
@@ -33,5 +38,13 @@ public class User {
 
     public Object getTimestampJoined() {
         return timestampJoined;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap(){
+        // TODO: update in future
+        HashMap<String, Object> result = new HashMap<>();
+//        result.put("name", name);
+        return result;
     }
 }

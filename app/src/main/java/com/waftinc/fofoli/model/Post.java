@@ -1,9 +1,12 @@
 package com.waftinc.fofoli.model;
 
+import com.google.firebase.database.Exclude;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.utils.Constants;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Post {
     private String providerName;
@@ -83,5 +86,13 @@ public class Post {
 
     public Object getTimestampCreatedInverse() {
         return timestampCreatedInverse;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap(){
+        // TODO: update in future
+        HashMap<String, Object> result = new HashMap<>();
+//        result.put("providerName", providerName);
+        return result;
     }
 }
