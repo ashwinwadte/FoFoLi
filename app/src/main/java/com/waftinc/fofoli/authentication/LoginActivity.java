@@ -242,16 +242,4 @@ public class LoginActivity extends Activity {
                 .setIcon(R.drawable.ic_error_outline_24px)
                 .show();
     }
-
-    /**
-     * Show message to users
-     */
-    private void showErrorDialog(String title, String message) {
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(R.drawable.ic_error_outline_24px)
-                .show();
-    }
 }
