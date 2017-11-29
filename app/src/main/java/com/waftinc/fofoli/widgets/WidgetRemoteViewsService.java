@@ -1,11 +1,9 @@
-package com.waftinc.fofoli;
+package com.waftinc.fofoli.widgets;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
-import com.waftinc.fofoli.adapters.WidgetDataProviderFactory;
-
-public class WidgetService extends RemoteViewsService {
+public class WidgetRemoteViewsService extends RemoteViewsService {
 
     // So pretty simple just defining the Adapter of the ListView.
     // Here Adapter is WidgetDataProviderFactory

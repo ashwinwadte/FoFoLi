@@ -1,5 +1,9 @@
 package com.waftinc.fofoli.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 import com.waftinc.fofoli.model.Post;
@@ -11,7 +15,7 @@ import java.util.Locale;
 public class Utils {
 
     //Date format for Image file name
-    public static final String SIMPLE_DATE_FORMAT = "yyyyMMddHHmmss";
+    private static final String SIMPLE_DATE_FORMAT = "yyyyMMddHHmmss";
 
     //TODO: remove unnecessary thing
     public static String getSubjectID(String encodedEmail) {
@@ -39,5 +43,13 @@ public class Utils {
         return new FirebaseRecyclerOptions.Builder<Post>()
                 .setQuery(query, Post.class)
                 .build();
+    }
+
+    public static void navigateToMap(Context context, String address) {
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(mapIntent);
     }
 }

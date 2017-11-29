@@ -1,9 +1,7 @@
 package com.waftinc.fofoli.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -85,12 +83,7 @@ public class RecyclerPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewH
             @Override
             public void onClick(View v) {
                 String address = getItem(postViewHolder.getAdapterPosition()).getProviderAddress();
-
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(mapIntent);
+                Utils.navigateToMap(mContext, address);
             }
         });
 

@@ -6,7 +6,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.waftinc.fofoli.Splash"/>
+        className = "com.waftinc.fofoli.SplashActivity"/>
       <point      
         x = "500"      
         y = "4140"/>

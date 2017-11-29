@@ -1,8 +1,7 @@
-package com.waftinc.fofoli.adapters;
+package com.waftinc.fofoli.widgets;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.AdapterView;
@@ -16,9 +15,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.waftinc.fofoli.FoFoLiIntentService;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.Post;
+import com.waftinc.fofoli.services.FoFoLiIntentService;
 import com.waftinc.fofoli.utils.Constants;
 
 import java.util.ArrayList;
@@ -31,19 +30,16 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
     private static final String TAG = WidgetDataProviderFactory.class.getSimpleName();
     private List<Post> postList = new ArrayList<>();
     private Context mContext;
-    private FirebaseAuth mAuth;
     private CountDownLatch mCountDownLatch;
 
-    public WidgetDataProviderFactory(Context context) {
+    WidgetDataProviderFactory(Context context) {
         mContext = context;
-        mAuth = FirebaseAuth.getInstance();
     }
 
     private void populatePostList() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
+        if (currentUser != null) {
             Query postRefQuery = FirebaseDatabase.getInstance().getReference()
                     .child(Constants.FIREBASE_LOCATION_POSTS)
                     .orderByChild(Constants.FIREBASE_QUERY_TIMESTAMP);
@@ -55,6 +51,9 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
                     postList.clear();
 
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Log.i(TAG, "Keys from: ref[" + postSnapshot.getRef().getKey() + "], snapshot[" + postSnapshot
+                                .getKey() + "], both same: " + postSnapshot.getRef().getKey()
+                                .equals(postSnapshot.getKey()));
                         Post post = postSnapshot.getValue(Post.class);
 
                         postList.add(post);
@@ -70,7 +69,7 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
                 }
             });
         } else {
-            Log.i(TAG, "user is null");
+            Log.i(TAG, "currentUser is null");
         }
         mCountDownLatch.countDown();
 

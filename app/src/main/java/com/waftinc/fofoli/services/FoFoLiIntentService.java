@@ -1,4 +1,4 @@
-package com.waftinc.fofoli;
+package com.waftinc.fofoli.services;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
@@ -7,6 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+
+import com.waftinc.fofoli.R;
+import com.waftinc.fofoli.utils.Utils;
+import com.waftinc.fofoli.widgets.FoFoLiWidgetProvider;
 
 public class FoFoLiIntentService extends IntentService {
     public static final String TAG = FoFoLiIntentService.class.getSimpleName();
@@ -50,22 +54,18 @@ public class FoFoLiIntentService extends IntentService {
     }
 
     private void navigateToMap(String address) {
-        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(mapIntent);
+        Utils.navigateToMap(this, address);
     }
 
     private void handleActionUpdateWidgets() {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, FoFoLiAppWidgetProvider.class));
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, FoFoLiWidgetProvider.class));
 
         //trigger data update and force a data refresh
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list_view);
 
         //Now update all widgets
-        FoFoLiAppWidgetProvider.updateAllAppWidgets(this, appWidgetManager, appWidgetIds);
+        FoFoLiWidgetProvider.updateAllAppWidgets(this, appWidgetManager, appWidgetIds);
     }
 }

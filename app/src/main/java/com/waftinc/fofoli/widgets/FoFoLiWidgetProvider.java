@@ -1,4 +1,4 @@
-package com.waftinc.fofoli;
+package com.waftinc.fofoli.widgets;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -8,10 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
+import com.waftinc.fofoli.services.FoFoLiIntentService;
+import com.waftinc.fofoli.MainActivity;
+import com.waftinc.fofoli.R;
+
 /**
  * Implementation of App Widget functionality.
  */
-public class FoFoLiAppWidgetProvider extends AppWidgetProvider {
+public class FoFoLiWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId) {
@@ -25,8 +29,8 @@ public class FoFoLiAppWidgetProvider extends AppWidgetProvider {
     private static RemoteViews getListRemoteView(Context context) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.donate_app_widget);
 
-        // set WidgetService intent to act as a adapter
-        Intent intent = new Intent(context, WidgetService.class);
+        // set WidgetRemoteViewsService intent to act as a adapter
+        Intent intent = new Intent(context, WidgetRemoteViewsService.class);
         views.setRemoteAdapter(R.id.widget_list_view, intent);
 
         // Create an Intent to launch MainActivity when donate button clicked
