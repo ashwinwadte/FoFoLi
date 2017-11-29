@@ -17,7 +17,7 @@ import com.waftinc.fofoli.R;
  */
 public class FoFoLiWidgetProvider extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId) {
         // Construct the RemoteViews object
         RemoteViews views = getListRemoteView(context);

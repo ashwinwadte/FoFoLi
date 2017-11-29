@@ -33,7 +33,6 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.waftinc.fofoli.MainActivity;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.User;
@@ -50,9 +49,9 @@ public class CreateAccountActivity extends Activity {
     /**
      * Data from the authenticated user
      */
-    public static FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth;
 
-    final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @BindView(R.id.edit_text_username_create)
     EditText etName;
@@ -201,7 +200,7 @@ public class CreateAccountActivity extends Activity {
             linearLayout.setVisibility(View.GONE);
 
 
-            final User newUser = new User(mName, mContact, mAddress, ServerValue.TIMESTAMP);
+            final User newUser = new User(mName, mContact, mAddress);
 
             mAuth.createUserWithEmailAndPassword(mEmail, mNewPassword)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

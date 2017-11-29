@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String SHOW_DONATE_DIALOG = "SHOW_DONATE_DIALOG";
 
-    TextView tvUserName, tvUserEmail;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.drawer_layout)
@@ -45,12 +43,12 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.recycler_view_all_posts)
     RecyclerView mRecyclerView_all_posts;
 
-    RecyclerPostAdapter rvPostAdapter;
+    private RecyclerPostAdapter rvPostAdapter;
 
-    DatabaseReference mFirebaseRootRef;
-    FirebaseAuth mAuth;
+    private DatabaseReference mFirebaseRootRef;
+    private FirebaseAuth mAuth;
 
-    boolean mShowDonateDialog = false;
+    private boolean mShowDonateDialog = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -113,8 +111,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initWidgets(View headerView) {
-        tvUserName = headerView.findViewById(R.id.navbar_user_name);
-        tvUserEmail = headerView.findViewById(R.id.navbar_user_email);
+        TextView tvUserName = headerView.findViewById(R.id.navbar_user_name);
+        TextView tvUserEmail = headerView.findViewById(R.id.navbar_user_email);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -174,7 +172,7 @@ public class MainActivity extends AppCompatActivity
         ShowDonateDialog();
     }
 
-    public void ShowDonateDialog() {
+    private void ShowDonateDialog() {
         /* Create an instance of the dialog fragment and show it */
         DialogFragment dialog = NewPostDialogFragment.newInstance();
         dialog.show(MainActivity.this.getFragmentManager(), NewPostDialogFragment.TAG);

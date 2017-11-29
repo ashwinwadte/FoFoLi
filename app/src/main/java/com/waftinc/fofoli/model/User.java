@@ -17,11 +17,11 @@ public class User {
     public User() {
     }
 
-    public User(String name, String contact, String address, Object timestampJoined) {
+    public User(String name, String contact, String address) {
         this.name = name;
         this.contact = contact;
         this.address = address;
-        this.timestampJoined = timestampJoined;
+        this.timestampJoined = com.google.firebase.database.ServerValue.TIMESTAMP;
     }
 
     public String getAddress() {

@@ -26,10 +26,10 @@ import java.util.concurrent.CountDownLatch;
 
 
 // This is the same as adapter of listView with few changes
-public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViewsFactory {
+class WidgetDataProviderFactory implements RemoteViewsService.RemoteViewsFactory {
     private static final String TAG = WidgetDataProviderFactory.class.getSimpleName();
-    private List<Post> postList = new ArrayList<>();
-    private Context mContext;
+    private final List<Post> postList = new ArrayList<>();
+    private final Context mContext;
     private CountDownLatch mCountDownLatch;
 
     WidgetDataProviderFactory(Context context) {
@@ -71,7 +71,6 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
         } else {
             Log.i(TAG, "currentUser is null");
         }
-        mCountDownLatch.countDown();
 
     }
 
@@ -123,7 +122,7 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
         // just returning the view, without doing any operations
         if (position == AdapterView.INVALID_POSITION || postList.isEmpty()) return remoteView;
 
-        Post post = null;
+        Post post;
         try {
             post = postList.get(position);
         } catch (IndexOutOfBoundsException e) {

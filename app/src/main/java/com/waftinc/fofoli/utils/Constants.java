@@ -11,7 +11,7 @@ public class Constants {
 
 
     //Constant Firebase URLS
-    public static final String FIREBASE_ROOT_URL = "https://fofoli.firebaseio.com";
+    private static final String FIREBASE_ROOT_URL = "https://fofoli.firebaseio.com";
     public static final String FIREBASE_URL_USERS = FIREBASE_ROOT_URL + "/" + FIREBASE_LOCATION_USERS;
     public static final String FIREBASE_URL_POSTS = FIREBASE_ROOT_URL + "/" + FIREBASE_LOCATION_POSTS;
 

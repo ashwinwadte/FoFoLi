@@ -20,15 +20,6 @@ public class DistributionConfirmationDialogFragment extends DialogFragment {
         return new DistributionConfirmationDialogFragment();
     }
 
-    /**
-     * Initialize instance variables with data from bundle
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -41,7 +41,7 @@ public class LoginActivity extends Activity {
     /**
      * Data from the authenticated user
      */
-    public static FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth;
 
     @BindView(R.id.edit_text_email)
     EditText etEmail;
@@ -159,7 +159,7 @@ public class LoginActivity extends Activity {
         return password.length() >= 6;
     }
 
-    public void loginWithPassword(final String email, final String password) {
+    private void loginWithPassword(final String email, final String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

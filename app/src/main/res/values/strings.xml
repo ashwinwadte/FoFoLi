@@ -70,7 +70,6 @@ If you have a fresh food remained, from parties, marriage, anniversary or if you
     <string name="default_encoded_email">user@example,com</string>
     <string name="default_address">City, India</string>
     <string name="string_already_distributed">Food is already distributed</string>
-    <string name="appwidget_text">Donate Food</string>
     <string name="string_version">Version 1.0</string>
     <string name="created_by">Created By</string>
     <string name="ashwin_wadte">Ashwin Wadte</string>

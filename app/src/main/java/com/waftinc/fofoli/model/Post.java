@@ -23,13 +23,13 @@ public class Post {
     }
 
     public Post(String providerName, String providerContact, String providerAddress, String providerEmail, String
-            peopleCount, Object timestampCreated) {
+            peopleCount) {
         this.providerName = providerName;
         this.providerContact = Constants.INDIA_CODE + providerContact;
         this.providerAddress = providerAddress;
         this.providerEmail = providerEmail;
         this.peopleCount = peopleCount;
-        this.timestampCreated = timestampCreated;
+        this.timestampCreated = com.google.firebase.database.ServerValue.TIMESTAMP;
         this.timestampCreatedInverse = -1 * (new Date().getTime());
 
         this.requestAccepted = false;
@@ -59,8 +59,8 @@ public class Post {
         return requestAccepted;
     }
 
-    public void setRequestAccepted(boolean requestAccepted) {
-        this.requestAccepted = requestAccepted;
+    public void setRequestAccepted() {
+        this.requestAccepted = true;
     }
 
     public String getDistributor() {
@@ -79,8 +79,8 @@ public class Post {
         return timestampRequestAccepted;
     }
 
-    public void setTimestampRequestAccepted(Object timestampRequestAccepted) {
-        this.timestampRequestAccepted = timestampRequestAccepted;
+    public void setTimestampRequestAccepted() {
+        this.timestampRequestAccepted = com.google.firebase.database.ServerValue.TIMESTAMP;
     }
 
     public Object getTimestampCreatedInverse() {

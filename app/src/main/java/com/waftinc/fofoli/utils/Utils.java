@@ -17,6 +17,11 @@ public class Utils {
     //Date format for Image file name
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMddHHmmss";
 
+    // adding a private constructor to the Utils class to prevent the accidental instantiation.
+    // It will make the maintenance easier.
+    private Utils() {
+    }
+
     //TODO: remove unnecessary thing
     public static String getSubjectID(String encodedEmail) {
         String timeStamp = new SimpleDateFormat(Utils.SIMPLE_DATE_FORMAT, Locale.US).format(new Date());

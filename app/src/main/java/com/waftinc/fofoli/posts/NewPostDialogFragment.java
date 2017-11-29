@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
@@ -29,6 +28,7 @@ import butterknife.ButterKnife;
 
 public class NewPostDialogFragment extends DialogFragment {
     public static final String TAG = "NewPostDialogFragment";
+
     @BindView(R.id.edit_text_count_of_people)
     EditText etCount;
 
@@ -105,7 +105,7 @@ public class NewPostDialogFragment extends DialogFragment {
     /**
      * Post new request
      */
-    public void postNewRequest() {
+    private void postNewRequest() {
         etCount.setError(null);
 
         String userEnteredCount = etCount.getText().toString();
@@ -150,8 +150,7 @@ public class NewPostDialogFragment extends DialogFragment {
 
 
             /* Build the shopping list */
-            Post newPost = new Post(userName, userContact, userAddress, userEmail, userEnteredCount, ServerValue
-                    .TIMESTAMP);
+            Post newPost = new Post(userName, userContact, userAddress, userEmail, userEnteredCount);
 
             //HashMap<String, Object> newPostMap = (HashMap<String, Object>) new ObjectMapper().convertValue(newPost,
             // Map.class);

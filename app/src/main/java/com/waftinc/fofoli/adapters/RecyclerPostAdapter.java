@@ -15,7 +15,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.waftinc.fofoli.R;
 import com.waftinc.fofoli.model.Post;
 import com.waftinc.fofoli.utils.Constants;
@@ -23,7 +22,7 @@ import com.waftinc.fofoli.utils.Utils;
 import com.waftinc.fofoli.viewholders.AllRecyclerViewHolders.PostViewHolder;
 
 public class RecyclerPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewHolder> {
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
@@ -99,9 +98,9 @@ public class RecyclerPostAdapter extends FirebaseRecyclerAdapter<Post, PostViewH
         boolean isDistributed = getItem(position).isRequestAccepted();
 
         if (!isDistributed) {
-            post.setRequestAccepted(true);
+            post.setRequestAccepted();
             post.setDistributor(distributor);
-            post.setTimestampRequestAccepted(ServerValue.TIMESTAMP);
+            post.setTimestampRequestAccepted();
 
             DatabaseReference ref = getRef(position);
 

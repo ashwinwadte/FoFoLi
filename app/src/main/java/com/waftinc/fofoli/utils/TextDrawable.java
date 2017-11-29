@@ -9,17 +9,17 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
 public class TextDrawable extends Drawable {
-    final String text;
-    final Paint paint;
-    Context context;
+    private final String text;
+    private final Paint paint;
+    private final Context mContext;
 
     public TextDrawable(String text, Context context) {
         this.text = text;
         this.paint = new Paint();
-        this.context = context;
+        this.mContext = context;
 
         float spTextSize = 15.3f;
-        float floatTextSize = spTextSize*context.getResources().getDisplayMetrics().scaledDensity;
+        float floatTextSize = spTextSize * mContext.getResources().getDisplayMetrics().scaledDensity;
 
         paint.setColor(Color.BLACK);
         paint.setTextSize(floatTextSize);
