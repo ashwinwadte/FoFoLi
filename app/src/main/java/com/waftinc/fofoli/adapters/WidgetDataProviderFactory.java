@@ -66,6 +66,7 @@ public class WidgetDataProviderFactory implements RemoteViewsService.RemoteViews
                 public void onCancelled(DatabaseError databaseError) {
                     // Getting Post failed, log a message
                     Log.i(TAG, "loadPost:onCancelled", databaseError.toException());
+                    mCountDownLatch.countDown();
                 }
             });
         } else {
