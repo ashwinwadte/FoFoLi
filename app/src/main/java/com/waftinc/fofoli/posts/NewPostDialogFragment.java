@@ -41,15 +41,6 @@ public class NewPostDialogFragment extends DialogFragment {
     }
 
     /**
-     * Initialize instance variables with data from bundle
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    /**
      * Open the keyboard automatically when the dialog fragment is opened
      */
     @Override
