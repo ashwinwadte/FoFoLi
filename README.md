@@ -1,13 +1,14 @@
 # FoFoLi
-FoFoLi or Food For Life is a location based Android app aiming at eliminating the hunger of poor people of India.
+Food For Life aka FoFoLi is a location-based Android application aimed at eliminating starvation in India by creating the bridge between food donors and distributors like NGOs. Individuals and entities like restaurants, caterers can donate excess fresh food through the app whereas motivated volunteers and NGOs can accept the request and collect food from donors after checking the food quality. They can then distribute this food to hungry people in the vicinity.
 
-A) Food Provider:
-If you have a fresh food remained, from parties, marriage, anniversary or if you are social worker then we are happy to collect food from you.
-1. If you are already logged in then click on the "DONATE" button on home page of app.
+A) Food Provider: If you have excess fresh food from parties, marriage, anniversary, etc., please donate it through this app.
+
+1. Log in to the app and donate the food by clicking on the "DONATE" button on the homepage of the app.
 2. Enter the no. of people the food can be fed.
-3. That information will be send to food Distributors.
+3. Now, the request will be created and broadcasted to all the food distributors.
 
 B) Food Distributor:
-1. As soon as Food Distributor Logs in, he can see the list providing the details of food available for disitibution.
-2. In list, Food Distributor able to see the details from where to collect food and contact details of the food provider.
 
+1. Once you log in, you can see the list of requests available for food distribution.
+2. You can accept the request and see the details of request like address and contact details of food providers.
+3. You can collect the food after checking it's quality and distribute it to the hungry people in the vicinity.
